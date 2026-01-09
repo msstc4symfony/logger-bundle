@@ -1,0 +1,24 @@
+coverage:
+  status:
+    project:
+      default:
+        target: 80%
+        threshold: 1%
+    patch:
+      default:
+        target: 80%
+        threshold: 1%
+
+comment:
+  layout: "reach, diff, files"
+  require_changes: true
+
+ignore:
+  - "tests/**"
+  - "vendor/**"
+  - "doc/**"
+  - "src/DependencyInjection/**"
+  - "src/LoggerBundle.php"
+  - "src/Monolog/ContextAwareExceptionTrait.php"
+  - "src/Monolog/Handler/ExceptionFilterDecorator.php"
+  - "src/Sentry/**"

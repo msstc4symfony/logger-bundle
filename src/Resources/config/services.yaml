@@ -1,0 +1,52 @@
+parameters:
+  logger_bundle.applicationNameDefault: unknown
+  logger_bundle.componentNameDefault: unknown
+
+  logger_bundle.applicationName: '%env(default:logger_bundle.applicationNameDefault:APPLICATION_NAME)%'
+  logger_bundle.componentName: '%env(default:logger_bundle.componentNameDefault:COMPONENT_NAME)%'
+
+  logger_bundle.exception_classes:
+      - Symfony\Component\HttpKernel\Exception\NotFoundHttpException
+      - Symfony\Component\HttpKernel\Exception\BadRequestHttpException
+      - Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException
+      - Symfony\Component\HttpKernel\Exception\UnsupportedMediaTypeHttpException
+      - Symfony\Component\Security\Core\Exception\AccessDeniedException
+
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    bind:
+      $applicationName: '%logger_bundle.applicationName%'
+      $componentName: '%logger_bundle.componentName%'
+      $batchMode: !php/const Monolog\Formatter\JsonFormatter::BATCH_MODE_NEWLINES
+      $includeStacktraces: '%kernel.debug%'
+
+  MaxShamaev\LoggerBundle\:
+    resource: '../../'
+    exclude:
+      - '../../DependencyInjection/'
+      - '../../Monolog/Handler/'
+      - '../../Monolog/Processor/'
+      - '../../LoggerBundle.php'
+
+  # Processors
+  MaxShamaev\LoggerBundle\Monolog\Processor\ConsoleProcessor:
+    tags:
+      - { name: monolog.processor }
+
+  MaxShamaev\LoggerBundle\Monolog\Processor\EnvironmentProcessor:
+    tags:
+      - { name: monolog.processor }
+
+  MaxShamaev\LoggerBundle\Monolog\Processor\ExceptionContextProcessor:
+    tags:
+      - { name: monolog.processor }
+
+  MaxShamaev\LoggerBundle\Monolog\Processor\UserProcessor:
+    tags:
+      - { name: monolog.processor }
+
+  MaxShamaev\LoggerBundle\Monolog\Processor\WebProcessor:
+    tags:
+      - { name: monolog.processor }
