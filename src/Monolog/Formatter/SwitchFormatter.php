@@ -4,6 +4,8 @@ namespace MaxShamaev\LoggerBundle\Monolog\Formatter;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\LogRecord;
+use Override;
+use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -18,17 +20,27 @@ final class SwitchFormatter implements FormatterInterface
     ) {
     }
 
-    public function format(LogRecord $record)
+    #[Override]
+    public function format(LogRecord $record): string
     {
-        return $this->isHumanOwner()
-            ? $this->humanReadableFormatter->format($record)
-            : $this->logStorageReadableFormatter->format($record);
+        if (!$this->isHumanOwner()) {
+            return $this->logStorageReadableFormatter->format($record);
+        }
+
+        $formatted = $this->humanReadableFormatter->format($record);
+
+        if (!is_string($formatted)) {
+            throw new RuntimeException(sprintf('Human-readable formatter %s must return a string, got %s.', $this->humanReadableFormatter::class, get_debug_type($formatted)));
+        }
+
+        return $formatted;
     }
 
     /**
-     * @return string
+     * @param LogRecord[] $records
      */
-    public function formatBatch(array $records)
+    #[Override]
+    public function formatBatch(array $records): string
     {
         foreach ($records as $key => $record) {
             $records[$key] = $this->format($record);

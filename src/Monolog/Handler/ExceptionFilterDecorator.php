@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace MaxShamaev\LoggerBundle\Monolog\Handler;
 
 use Override;
+use Psr\Log\AbstractLogger;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 use Stringable;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class ExceptionFilterDecorator implements LoggerInterface
+final class ExceptionFilterDecorator extends AbstractLogger
 {
     /**
      * @param list<class-string> $exceptionClasses
@@ -22,85 +24,9 @@ final class ExceptionFilterDecorator implements LoggerInterface
     }
 
     #[Override]
-    public function emergency(Stringable|string $message, array $context = []): void
+    public function log($level, string|Stringable $message, array $context = []): void
     {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->emergency($message, $context);
-    }
-
-    #[Override]
-    public function alert(Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->alert($message, $context);
-    }
-
-    #[Override]
-    public function critical(Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->critical($message, $context);
-    }
-
-    #[Override]
-    public function error(Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->error($message, $context);
-    }
-
-    #[Override]
-    public function warning(Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->warning($message, $context);
-    }
-
-    #[Override]
-    public function notice(Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->notice($message, $context);
-    }
-
-    #[Override]
-    public function info(Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
-            return;
-        }
-
-        $this->inner->info($message, $context);
-    }
-
-    #[Override]
-    public function debug(Stringable|string $message, array $context = []): void
-    {
-        $this->inner->debug($message, $context);
-    }
-
-    #[Override]
-    public function log($level, Stringable|string $message, array $context = []): void
-    {
-        if ($this->mustSkip($context)) {
+        if ($level !== LogLevel::DEBUG && $this->mustSkip($context)) {
             return;
         }
 
@@ -112,14 +38,13 @@ final class ExceptionFilterDecorator implements LoggerInterface
      */
     private function mustSkip(array $context): bool
     {
-        if (isset($context['exception']) && is_object($context['exception'])) {
-            foreach ($this->exceptionClasses as $class) {
-                if ($context['exception'] instanceof $class || is_subclass_of($context['exception'], $class)) {
-                    return true;
-                }
-            }
+        if (!isset($context['exception']) || !is_object($context['exception'])) {
+            return false;
         }
 
-        return false;
+        return array_any(
+            $this->exceptionClasses,
+            static fn (string $class): bool => $context['exception'] instanceof $class,
+        );
     }
 }

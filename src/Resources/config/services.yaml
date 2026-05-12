@@ -17,8 +17,6 @@ services:
     autowire: true
     autoconfigure: true
     bind:
-      $applicationName: '%logger_bundle.applicationName%'
-      $componentName: '%logger_bundle.componentName%'
       $batchMode: !php/const Monolog\Formatter\JsonFormatter::BATCH_MODE_NEWLINES
       $includeStacktraces: '%kernel.debug%'
 

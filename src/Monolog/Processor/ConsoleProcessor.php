@@ -8,7 +8,7 @@ use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 use Override;
 
-class ConsoleProcessor implements ProcessorInterface
+final class ConsoleProcessor implements ProcessorInterface
 {
     #[Override]
     public function __invoke(LogRecord $record): LogRecord

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace unit\Monolog\Processor;
+namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Processor;
 
 use DateTimeImmutable;
 use MaxShamaev\LoggerBundle\Monolog\Processor\UserProcessor;

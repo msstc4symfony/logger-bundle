@@ -10,7 +10,7 @@ use Monolog\Processor\ProcessorInterface;
 use Override;
 use Throwable;
 
-class ExceptionContextProcessor implements ProcessorInterface
+final class ExceptionContextProcessor implements ProcessorInterface
 {
     #[Override]
     public function __invoke(LogRecord $record): LogRecord

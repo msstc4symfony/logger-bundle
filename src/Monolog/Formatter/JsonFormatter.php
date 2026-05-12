@@ -4,6 +4,7 @@ namespace MaxShamaev\LoggerBundle\Monolog\Formatter;
 
 use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
 use Monolog\LogRecord;
+use Override;
 use stdClass;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
@@ -15,7 +16,7 @@ final class JsonFormatter extends BaseJsonFormatter
 
     public function __construct(
         int $batchMode = BaseJsonFormatter::BATCH_MODE_JSON,
-        bool $appendNewline = true,
+        bool $appendNewline = false,
         bool $ignoreEmptyContextAndExtra = false,
         bool $includeStacktraces = false,
         #[Autowire(param: 'logger_bundle.applicationName')]
@@ -26,6 +27,7 @@ final class JsonFormatter extends BaseJsonFormatter
         parent::__construct($batchMode, $appendNewline, $ignoreEmptyContextAndExtra, $includeStacktraces);
     }
 
+    #[Override]
     public function format(LogRecord $record): string
     {
         $normalized = $this->normalizeRecord($record);
@@ -54,9 +56,10 @@ final class JsonFormatter extends BaseJsonFormatter
             $normalized['extra'] = new stdClass();
         }
 
-        return $this->toJson($normalized, true) . "\n";
+        return $this->toJson($normalized, true) . ($this->appendNewline ? "\n" : '');
     }
 
+    #[Override]
     public function formatBatch(array $records): string
     {
         return str_replace("\n\n", "\n", parent::formatBatch($records));

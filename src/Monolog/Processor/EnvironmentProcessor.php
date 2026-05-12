@@ -7,35 +7,34 @@ namespace MaxShamaev\LoggerBundle\Monolog\Processor;
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
 use Override;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 final class EnvironmentProcessor implements ProcessorInterface
 {
+    private readonly ?string $containerId;
+
+    public function __construct(
+        #[Autowire(env: 'default::POD_NAME')]
+        ?string $podName = null,
+        #[Autowire(env: 'default::POD_UID')]
+        ?string $podUid = null,
+    ) {
+        $hostname = gethostname();
+
+        $this->containerId = match (true) {
+            $podName !== null && $podName !== '' => $podName,
+            $podUid !== null && $podUid !== '' => $podUid,
+            is_string($hostname) && $hostname !== '' => $hostname,
+            default => null,
+        };
+    }
+
     #[Override]
     public function __invoke(LogRecord $record): LogRecord
     {
         $record->extra['sapi'] = PHP_SAPI;
-        $record->extra['container_id'] = $this->getContainerId();
+        $record->extra['container_id'] = $this->containerId;
 
         return $record;
-    }
-
-    private function getContainerId(): ?string
-    {
-        static $containerId = null;
-        static $containerIdDetected = null;
-
-        if (!$containerIdDetected) {
-            if (isset($_ENV['POD_NAME'])) {
-                $containerId = $_ENV['POD_NAME'];
-            } elseif (isset($_ENV['POD_UID'])) {
-                $containerId = $_ENV['POD_UID'];
-            } else {
-                $containerId = gethostname();
-            }
-
-            $containerIdDetected = true;
-        }
-
-        return is_string($containerId) ? $containerId : null;
     }
 }

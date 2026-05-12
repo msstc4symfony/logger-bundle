@@ -10,7 +10,7 @@ use Override;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class WebProcessor implements ProcessorInterface
+final class WebProcessor implements ProcessorInterface
 {
     public function __construct(
         private readonly RequestStack $requestStack,

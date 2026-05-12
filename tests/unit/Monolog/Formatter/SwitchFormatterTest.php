@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace unit\Monolog\Formatter;
+namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Formatter;
 
 use DateTimeImmutable;
 use MaxShamaev\LoggerBundle\Monolog\Formatter\JsonFormatter;
@@ -53,7 +53,7 @@ final class SwitchFormatterTest extends TestCase
             'regular' => [
                 'record' => new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message'),
                 'humanReadable' => false,
-                'expected' => '{"message":"test message","context":{},"level":200,"level_name":"INFO","channel":"test","datetime":"2025-12-01T10:00:00+00:00","extra":{},"application":"unknown","component":"unknown","metrics":{}}' . PHP_EOL,
+                'expected' => '{"message":"test message","context":{},"level":200,"level_name":"INFO","channel":"test","datetime":"2025-12-01T10:00:00+00:00","extra":{},"application":"unknown","component":"unknown","metrics":{}}',
             ],
         ];
     }
@@ -72,7 +72,7 @@ final class SwitchFormatterTest extends TestCase
             'regular' => [
                 'records' => [new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message')],
                 'humanReadable' => false,
-                'expected' => '{"message":"test message","context":{},"level":200,"level_name":"INFO","channel":"test","datetime":"2025-12-01T10:00:00+00:00","extra":{},"application":"unknown","component":"unknown","metrics":{}}' . PHP_EOL,
+                'expected' => '{"message":"test message","context":{},"level":200,"level_name":"INFO","channel":"test","datetime":"2025-12-01T10:00:00+00:00","extra":{},"application":"unknown","component":"unknown","metrics":{}}',
             ],
         ];
     }

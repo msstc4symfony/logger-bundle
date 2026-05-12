@@ -19,6 +19,7 @@ final class LoggerBundle extends Bundle
         return new LoggerExtension();
     }
 
+    #[Override]
     public function build(ContainerBuilder $container): void
     {
         parent::build($container);

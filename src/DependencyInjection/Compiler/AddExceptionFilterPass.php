@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace MaxShamaev\LoggerBundle\DependencyInjection\Compiler;
 
 use MaxShamaev\LoggerBundle\Monolog\Handler\ExceptionFilterDecorator;
+use Override;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
-class AddExceptionFilterPass implements CompilerPassInterface
+final class AddExceptionFilterPass implements CompilerPassInterface
 {
+    #[Override]
     public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $id => $definition) {
@@ -22,11 +24,14 @@ class AddExceptionFilterPass implements CompilerPassInterface
                 continue;
             }
 
-            $container->register($id . '.decorator.exception_filter', ExceptionFilterDecorator::class)
+            $decorator = $container->register($id . '.decorator.exception_filter', ExceptionFilterDecorator::class)
                 ->setDecoratedService($id)
                 ->setAutowired(true)
-                ->setPublic(true)
             ;
+
+            if ($definition->isPublic()) {
+                $decorator->setPublic(true);
+            }
         }
     }
 }
