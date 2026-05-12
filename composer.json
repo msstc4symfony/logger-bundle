@@ -16,7 +16,9 @@
     }
   },
   "autoload-dev": {
+    "psr-4": {
       "MaxShamaev\\LoggerBundle\\Test\\Unit\\": "tests/unit/"
+    }
   },
   "require": {
     "php": ">=8.4",

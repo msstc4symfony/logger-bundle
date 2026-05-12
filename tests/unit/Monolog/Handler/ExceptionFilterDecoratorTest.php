@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Handler;
 
 use MaxShamaev\LoggerBundle\Monolog\Handler\ExceptionFilterDecorator;
+use MaxShamaev\LoggerBundle\Test\Unit\Monolog\Handler\Fixture\RecordingLogger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use Psr\Log\AbstractLogger;
-use Psr\Log\LoggerInterface;
 use Psr\Log\LogLevel;
 use RuntimeException;
-use Stringable;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -35,7 +33,7 @@ final class ExceptionFilterDecoratorTest extends TestCase
     #[DataProvider('provideFilteringLevels')]
     public function testSkipsFilteredExceptionForNonDebugLevel(string $level): void
     {
-        $inner = $this->makeRecordingLogger();
+        $inner = new RecordingLogger();
         $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
 
         $decorator->log($level, 'lost', ['exception' => new NotFoundHttpException()]);
@@ -45,7 +43,7 @@ final class ExceptionFilterDecoratorTest extends TestCase
 
     public function testDebugAlwaysPassesEvenForFilteredException(): void
     {
-        $inner = $this->makeRecordingLogger();
+        $inner = new RecordingLogger();
         $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
         $exception = new NotFoundHttpException();
 
@@ -58,7 +56,7 @@ final class ExceptionFilterDecoratorTest extends TestCase
 
     public function testNamedMethodForwardsThroughLog(): void
     {
-        $inner = $this->makeRecordingLogger();
+        $inner = new RecordingLogger();
         $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
 
         $decorator->error('boom', ['exception' => new RuntimeException()]);
@@ -67,9 +65,19 @@ final class ExceptionFilterDecoratorTest extends TestCase
         self::assertSame(LogLevel::ERROR, $inner->records[0]['level']);
     }
 
+    public function testNamedMethodDropsFilteredException(): void
+    {
+        $inner = new RecordingLogger();
+        $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
+
+        $decorator->error('lost', ['exception' => new NotFoundHttpException()]);
+
+        self::assertSame([], $inner->records);
+    }
+
     public function testFiltersSubclassOfConfiguredException(): void
     {
-        $inner = $this->makeRecordingLogger();
+        $inner = new RecordingLogger();
         $decorator = new ExceptionFilterDecorator($inner, [HttpException::class]);
 
         $decorator->warning('skip', ['exception' => new BadRequestHttpException()]);
@@ -79,7 +87,7 @@ final class ExceptionFilterDecoratorTest extends TestCase
 
     public function testPassesThroughWhenNoExceptionInContext(): void
     {
-        $inner = $this->makeRecordingLogger();
+        $inner = new RecordingLogger();
         $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
 
         $decorator->error('plain');
@@ -89,7 +97,7 @@ final class ExceptionFilterDecoratorTest extends TestCase
 
     public function testPassesThroughForUnfilteredException(): void
     {
-        $inner = $this->makeRecordingLogger();
+        $inner = new RecordingLogger();
         $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
 
         $decorator->error('boom', ['exception' => new RuntimeException()]);
@@ -97,22 +105,14 @@ final class ExceptionFilterDecoratorTest extends TestCase
         self::assertCount(1, $inner->records);
     }
 
-    /**
-     * @return LoggerInterface&object{records: list<array{level: string, message: string|Stringable, context: array<array-key, mixed>}>}
-     */
-    private function makeRecordingLogger(): LoggerInterface
+    public function testPassesThroughWhenExceptionContextIsNotObject(): void
     {
-        return new class extends AbstractLogger {
-            /** @var list<array{level: string, message: string|Stringable, context: array<array-key, mixed>}> */
-            public array $records = [];
+        $inner = new RecordingLogger();
+        $decorator = new ExceptionFilterDecorator($inner, [NotFoundHttpException::class]);
 
-            public function log($level, string|Stringable $message, array $context = []): void
-            {
-                if (!is_string($level)) {
-                    throw new RuntimeException('Level must be a string.');
-                }
-                $this->records[] = ['level' => $level, 'message' => $message, 'context' => $context];
-            }
-        };
+        $decorator->error('plain', ['exception' => 'not-an-object']);
+
+        self::assertCount(1, $inner->records);
+        self::assertSame('not-an-object', $inner->records[0]['context']['exception']);
     }
 }

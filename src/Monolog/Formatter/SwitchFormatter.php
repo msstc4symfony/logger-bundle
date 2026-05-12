@@ -3,9 +3,9 @@
 namespace MaxShamaev\LoggerBundle\Monolog\Formatter;
 
 use Monolog\Formatter\FormatterInterface;
+use Monolog\Formatter\LineFormatter;
 use Monolog\LogRecord;
 use Override;
-use RuntimeException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -14,26 +14,20 @@ final class SwitchFormatter implements FormatterInterface
 {
     public function __construct(
         #[Autowire(service: 'monolog.formatter.line')]
-        private readonly FormatterInterface $humanReadableFormatter,
+        private readonly LineFormatter $humanReadableFormatter,
         private readonly JsonFormatter $logStorageReadableFormatter,
         private readonly RequestStack $requestStack,
+        #[Autowire(env: 'default::HUMAN_READABLE')]
+        private readonly ?string $humanReadable = null,
     ) {
     }
 
     #[Override]
     public function format(LogRecord $record): string
     {
-        if (!$this->isHumanOwner()) {
-            return $this->logStorageReadableFormatter->format($record);
-        }
-
-        $formatted = $this->humanReadableFormatter->format($record);
-
-        if (!is_string($formatted)) {
-            throw new RuntimeException(sprintf('Human-readable formatter %s must return a string, got %s.', $this->humanReadableFormatter::class, get_debug_type($formatted)));
-        }
-
-        return $formatted;
+        return $this->isHumanOwner()
+            ? $this->humanReadableFormatter->format($record)
+            : $this->logStorageReadableFormatter->format($record);
     }
 
     /**
@@ -52,7 +46,7 @@ final class SwitchFormatter implements FormatterInterface
     private function isHumanOwner(): bool
     {
         return (PHP_SAPI === 'cli' || !$this->requestStack->getCurrentRequest() instanceof Request)
-            && isset($_ENV['HUMAN_READABLE'])
-            && $_ENV['HUMAN_READABLE'] !== '';
+            && $this->humanReadable !== null
+            && $this->humanReadable !== '';
     }
 }

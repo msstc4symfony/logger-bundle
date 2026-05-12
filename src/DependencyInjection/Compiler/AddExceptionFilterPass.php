@@ -24,14 +24,12 @@ final class AddExceptionFilterPass implements CompilerPassInterface
                 continue;
             }
 
-            $decorator = $container->register($id . '.decorator.exception_filter', ExceptionFilterDecorator::class)
+            // Visibility is propagated from the decorated service by Symfony's
+            // DecoratorServicePass (>=5.3), so no setPublic() is needed here.
+            $container->register($id . '.decorator.exception_filter', ExceptionFilterDecorator::class)
                 ->setDecoratedService($id)
                 ->setAutowired(true)
             ;
-
-            if ($definition->isPublic()) {
-                $decorator->setPublic(true);
-            }
         }
     }
 }

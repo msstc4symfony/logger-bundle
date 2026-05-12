@@ -19,8 +19,12 @@ final class SwitchFormatterTest extends TestCase
     #[DataProvider('getDataForFormat')]
     public function testFormat(LogRecord $record, bool $humanReadable, string $expected): void
     {
-        $formater = new SwitchFormatter(new LineFormatter(), new JsonFormatter(JsonFormatter::BATCH_MODE_NEWLINES), new RequestStack());
-        $_ENV['HUMAN_READABLE'] = $humanReadable ? '1' : '';
+        $formater = new SwitchFormatter(
+            new LineFormatter(),
+            new JsonFormatter(JsonFormatter::BATCH_MODE_NEWLINES),
+            new RequestStack(),
+            $humanReadable ? '1' : null,
+        );
         $actual = $formater->format($record);
 
         self::assertSame($expected, $actual);
@@ -32,8 +36,12 @@ final class SwitchFormatterTest extends TestCase
     #[DataProvider('getDataForFormatBatch')]
     public function testFormatBatch(array $records, bool $humanReadable, string $expected): void
     {
-        $formater = new SwitchFormatter(new LineFormatter(), new JsonFormatter(JsonFormatter::BATCH_MODE_NEWLINES), new RequestStack());
-        $_ENV['HUMAN_READABLE'] = $humanReadable ? '1' : '';
+        $formater = new SwitchFormatter(
+            new LineFormatter(),
+            new JsonFormatter(JsonFormatter::BATCH_MODE_NEWLINES),
+            new RequestStack(),
+            $humanReadable ? '1' : null,
+        );
         $actual = $formater->formatBatch($records);
 
         self::assertSame($expected, $actual);
