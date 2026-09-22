@@ -26,7 +26,7 @@ final class LoggerIntegration implements IntegrationInterface
             static function (Event $event): Event {
                 $integration = SentrySdk::getCurrentHub()->getIntegration(self::class);
 
-                if ($integration instanceof IntegrationInterface) {
+                if ($integration instanceof self) {
                     $event->setTag('application', $integration->applicationName);
                     $event->setTag('component', $integration->componentName);
                 }

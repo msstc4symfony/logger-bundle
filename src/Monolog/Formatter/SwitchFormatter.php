@@ -10,15 +10,15 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-final class SwitchFormatter implements FormatterInterface
+final readonly class SwitchFormatter implements FormatterInterface
 {
     public function __construct(
         #[Autowire(service: 'monolog.formatter.line')]
-        private readonly LineFormatter $humanReadableFormatter,
-        private readonly JsonFormatter $logStorageReadableFormatter,
-        private readonly RequestStack $requestStack,
+        private LineFormatter $humanReadableFormatter,
+        private JsonFormatter $logStorageReadableFormatter,
+        private RequestStack $requestStack,
         #[Autowire(env: 'default::HUMAN_READABLE')]
-        private readonly ?string $humanReadable = null,
+        private ?string $humanReadable = null,
     ) {
     }
 

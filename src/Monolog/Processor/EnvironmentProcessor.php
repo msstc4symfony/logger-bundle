@@ -9,9 +9,9 @@ use Monolog\Processor\ProcessorInterface;
 use Override;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class EnvironmentProcessor implements ProcessorInterface
+final readonly class EnvironmentProcessor implements ProcessorInterface
 {
-    private readonly ?string $containerId;
+    private ?string $containerId;
 
     public function __construct(
         #[Autowire(env: 'default::POD_NAME')]

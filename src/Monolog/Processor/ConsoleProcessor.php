@@ -17,7 +17,7 @@ final class ConsoleProcessor implements ProcessorInterface
             return $record;
         }
 
-        $record->extra['cmd'] = implode(' ', $_SERVER['argv']);
+        $record->extra['cmd'] = implode(' ', array_filter($_SERVER['argv'], is_string(...)));
 
         return $record;
     }

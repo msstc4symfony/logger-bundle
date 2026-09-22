@@ -1,0 +1,42 @@
+deptrac:
+    paths:
+        - ./src
+
+    exclude_files:
+        - '#.*test.*#i'
+
+    layers:
+        - name: Monolog
+          collectors:
+              - type: directory
+                value: src/Monolog/.*
+
+        - name: Sentry
+          collectors:
+              - type: directory
+                value: src/Sentry/.*
+
+        - name: DependencyInjection
+          collectors:
+              - type: directory
+                value: src/DependencyInjection/.*
+
+        - name: BundleRoot
+          collectors:
+              - type: classLike
+                value: MaxShamaev\\LoggerBundle\\LoggerBundle
+
+    ruleset:
+        # Monolog processors/formatters/handlers are the core; they depend on nothing in-bundle.
+        Monolog: ~
+
+        # Optional Sentry integration stays self-contained — sentry/sentry is not a hard dependency.
+        Sentry: ~
+
+        # Wiring consumes the core, never the other way round.
+        DependencyInjection:
+            - Monolog
+
+        # The bundle entrypoint only composes the DI layer.
+        BundleRoot:
+            - DependencyInjection

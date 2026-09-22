@@ -10,10 +10,10 @@ use Override;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
-final class UserProcessor implements ProcessorInterface
+final readonly class UserProcessor implements ProcessorInterface
 {
     public function __construct(
-        private readonly ?TokenStorageInterface $tokenStorage,
+        private ?TokenStorageInterface $tokenStorage,
     ) {
     }
 

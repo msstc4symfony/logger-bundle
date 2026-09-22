@@ -28,8 +28,7 @@ final class WebProcessorTest extends TestCase
      */
     public static function getDataForInvoke(): array
     {
-        $requestStack = new RequestStack();
-        $requestStack->push(Request::create('https://example.com'));
+        $requestStack = new RequestStack([Request::create('https://example.com')]);
 
         return [
             'simple' => [
