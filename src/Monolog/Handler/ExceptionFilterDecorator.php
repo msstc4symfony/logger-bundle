@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Monolog\Handler;
+namespace Msstc4Symfony\LoggerBundle\Monolog\Handler;
 
 use Override;
 use Psr\Log\AbstractLogger;

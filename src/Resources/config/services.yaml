@@ -20,7 +20,7 @@ services:
       $batchMode: !php/const Monolog\Formatter\JsonFormatter::BATCH_MODE_NEWLINES
       $includeStacktraces: '%kernel.debug%'
 
-  MaxShamaev\LoggerBundle\:
+  Msstc4Symfony\LoggerBundle\:
     resource: '../../'
     exclude:
       - '../../DependencyInjection/'
@@ -29,22 +29,22 @@ services:
       - '../../LoggerBundle.php'
 
   # Processors
-  MaxShamaev\LoggerBundle\Monolog\Processor\ConsoleProcessor:
+  Msstc4Symfony\LoggerBundle\Monolog\Processor\ConsoleProcessor:
     tags:
       - { name: monolog.processor }
 
-  MaxShamaev\LoggerBundle\Monolog\Processor\EnvironmentProcessor:
+  Msstc4Symfony\LoggerBundle\Monolog\Processor\EnvironmentProcessor:
     tags:
       - { name: monolog.processor }
 
-  MaxShamaev\LoggerBundle\Monolog\Processor\ExceptionContextProcessor:
+  Msstc4Symfony\LoggerBundle\Monolog\Processor\ExceptionContextProcessor:
     tags:
       - { name: monolog.processor }
 
-  MaxShamaev\LoggerBundle\Monolog\Processor\UserProcessor:
+  Msstc4Symfony\LoggerBundle\Monolog\Processor\UserProcessor:
     tags:
       - { name: monolog.processor }
 
-  MaxShamaev\LoggerBundle\Monolog\Processor\WebProcessor:
+  Msstc4Symfony\LoggerBundle\Monolog\Processor\WebProcessor:
     tags:
       - { name: monolog.processor }

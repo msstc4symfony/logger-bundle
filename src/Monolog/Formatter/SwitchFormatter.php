@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Monolog\Formatter;
+namespace Msstc4Symfony\LoggerBundle\Monolog\Formatter;
 
 use Monolog\Formatter\FormatterInterface;
 use Monolog\Formatter\LineFormatter;

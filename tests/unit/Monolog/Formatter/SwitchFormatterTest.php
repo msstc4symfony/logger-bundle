@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Formatter;
+namespace Msstc4Symfony\LoggerBundle\Test\Unit\Monolog\Formatter;
 
 use DateTimeImmutable;
-use MaxShamaev\LoggerBundle\Monolog\Formatter\JsonFormatter;
-use MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter;
 use Monolog\Formatter\LineFormatter;
 use Monolog\Level;
 use Monolog\LogRecord;
+use Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter;
+use Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;

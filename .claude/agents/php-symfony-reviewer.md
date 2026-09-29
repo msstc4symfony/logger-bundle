@@ -4,7 +4,7 @@ description: Use this agent to review PHP / Symfony bundle code changes in this 
 tools: Read, Grep, Glob, Bash
 ---
 
-You are reviewing code in `max-shamaev-php/logger-bundle` — a published Symfony bundle that extends Monolog. Treat it as a library with consumers, not an application.
+You are reviewing code in `msstc4symfony/logger-bundle` — a published Symfony bundle that extends Monolog. Treat it as a library with consumers, not an application.
 
 ## Ground truth before you start
 
@@ -22,7 +22,7 @@ Prioritize, in this order:
 2. **Symfony DI correctness.** New services in `Monolog/Processor/` and `Monolog/Handler/` are **excluded from the PSR-4 resource scan** in `src/Resources/config/services.yaml` and must be registered explicitly. Processors need `tags: [{ name: monolog.processor }]`. The `AddExceptionFilterPass` only decorates services whose id starts with `monolog.logger`; check whether new logger-shaped services miss that prefix.
 3. **PSR-3 / decorator contracts.** `ExceptionFilterDecorator` deliberately lets `debug()` through unfiltered. If a reviewer-visible change touches this class, the asymmetry must be preserved or the change must explain why dropping it is safe.
 4. **Strict-mode hygiene.** Every PHP file must start with `declare(strict_types=1)`. PHPStan level 9 is in force — flag missing generics on arrays (`array<string, mixed>`), missing `@param`/`@return` on mixed-typed parameters, and any `mixed` that could be narrowed.
-5. **PHPUnit strict-mode pitfalls.** `phpunit.xml.dist` sets `failOnRisky`, `failOnWarning`, `failOnPhpunitDeprecation`, and `beStrictAboutOutputDuringTests`. Tests that emit warnings, leak output via `var_dump`/`echo`, or skip assertions will break CI. The dev autoload PSR-4 is `MaxShamaev\HealthCheckBundle\Test\Unit\` — match the existing namespace pattern in neighboring tests; do not "correct" it without checking.
+5. **PHPUnit strict-mode pitfalls.** `phpunit.xml.dist` sets `failOnRisky`, `failOnWarning`, `failOnPhpunitDeprecation`, and `beStrictAboutOutputDuringTests`. Tests that emit warnings, leak output via `var_dump`/`echo`, or skip assertions will break CI. The dev autoload PSR-4 is `Msstc4Symfony\HealthCheckBundle\Test\Unit\` — match the existing namespace pattern in neighboring tests; do not "correct" it without checking.
 6. **Sentry isolation.** `src/Sentry/Integration/LoggerIntegration.php` is excluded from PHPStan and Rector because `sentry/sentry` is not a hard dependency. Code that imports Sentry classes outside that directory introduces a hidden runtime dependency — flag it.
 7. **Security-adjacent concerns.** `WebProcessor` writes URLs and client IPs into logs; `ExceptionContextProcessor` merges arbitrary exception context into log records; `JsonFormatter` serializes everything. Flag any change that could leak credentials, tokens, or PII into log output.
 

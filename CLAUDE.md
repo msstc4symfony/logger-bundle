@@ -5,7 +5,7 @@ under `.claude/docs/`; this file stays lean.
 
 ## What this is
 
-Symfony bundle (`max-shamaev-php/logger-bundle`, namespace `MaxShamaev\LoggerBundle`)
+Symfony bundle (`msstc4symfony/logger-bundle`, namespace `Msstc4Symfony\LoggerBundle`)
 that extends Monolog with context-aware processors, formatters, an
 exception-filtering decorator, and an opt-in Sentry integration. Requires
 PHP >= 8.4 and Symfony 6.4 LTS / 7.x / 8.x. Library code only — no host

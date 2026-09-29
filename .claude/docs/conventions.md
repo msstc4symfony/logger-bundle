@@ -28,8 +28,8 @@
 
 ## Файл/неймспейс
 
-- PSR-4 root: `MaxShamaev\LoggerBundle\` → `src/`.
-- Тестовый PSR-4 root: `MaxShamaev\LoggerBundle\Test\Unit\` → `tests/unit/`
+- PSR-4 root: `Msstc4Symfony\LoggerBundle\` → `src/`.
+- Тестовый PSR-4 root: `Msstc4Symfony\LoggerBundle\Test\Unit\` → `tests/unit/`
   (см. `composer.json`/`composer-ci.json` — актуально, никакого
   copy/paste-дефекта здесь больше нет).
 - Один класс на файл. Классы `final` (или `final readonly`, если все

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Processor;
+namespace Msstc4Symfony\LoggerBundle\Test\Unit\Monolog\Processor;
 
 use DateTimeImmutable;
-use MaxShamaev\LoggerBundle\Monolog\Processor\ConsoleProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
+use Msstc4Symfony\LoggerBundle\Monolog\Processor\ConsoleProcessor;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

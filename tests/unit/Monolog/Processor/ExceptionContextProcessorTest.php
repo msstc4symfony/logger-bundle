@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Processor;
+namespace Msstc4Symfony\LoggerBundle\Test\Unit\Monolog\Processor;
 
 use DateTimeImmutable;
 use Exception;
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionInterface;
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionTrait;
-use MaxShamaev\LoggerBundle\Monolog\Processor\ExceptionContextProcessor;
 use Monolog\Level;
 use Monolog\LogRecord;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionTrait;
+use Msstc4Symfony\LoggerBundle\Monolog\Processor\ExceptionContextProcessor;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 

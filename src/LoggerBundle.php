@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle;
+namespace Msstc4Symfony\LoggerBundle;
 
-use MaxShamaev\LoggerBundle\DependencyInjection\Compiler\AddExceptionFilterPass;
-use MaxShamaev\LoggerBundle\DependencyInjection\LoggerExtension;
+use Msstc4Symfony\LoggerBundle\DependencyInjection\Compiler\AddExceptionFilterPass;
+use Msstc4Symfony\LoggerBundle\DependencyInjection\LoggerExtension;
 use Override;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;

@@ -1,6 +1,12 @@
 {
-  "name": "max-shamaev-php/logger-bundle",
+  "name": "msstc4symfony/logger-bundle",
   "license": "MIT",
+  "authors": [
+    {
+      "name": "Maxim Shamaev",
+      "email": "maxim.shamaev@gmail.com"
+    }
+  ],
   "type": "symfony-bundle",
   "description": "Monolog extension",
   "keywords": [
@@ -11,12 +17,12 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "MaxShamaev\\LoggerBundle\\": "src/"
+      "Msstc4Symfony\\LoggerBundle\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "MaxShamaev\\LoggerBundle\\Test\\Unit\\": "tests/unit/"
+      "Msstc4Symfony\\LoggerBundle\\Test\\Unit\\": "tests/unit/"
     }
   },
   "require": {

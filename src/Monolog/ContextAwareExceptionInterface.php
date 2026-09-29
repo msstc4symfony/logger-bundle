@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Monolog;
+namespace Msstc4Symfony\LoggerBundle\Monolog;
 
 interface ContextAwareExceptionInterface
 {

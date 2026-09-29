@@ -26,7 +26,7 @@ Match the existing style — see `src/Monolog/Processor/WebProcessor.php` as the
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Monolog\Processor;
+namespace Msstc4Symfony\LoggerBundle\Monolog\Processor;
 
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
@@ -62,12 +62,12 @@ Rules:
 The PSR-4 resource scan **excludes** `Monolog/Processor/`, so autoconfiguration alone is not enough. Add an explicit entry, keeping the list alphabetically sorted by class name:
 
 ```yaml
-  MaxShamaev\LoggerBundle\Monolog\Processor\<Name>Processor:
+  Msstc4Symfony\LoggerBundle\Monolog\Processor\<Name>Processor:
     tags:
       - { name: monolog.processor }
 ```
 
-Do not remove the `# Processors` comment block. Do not change `_defaults` or the `MaxShamaev\LoggerBundle\:` resource block.
+Do not remove the `# Processors` comment block. Do not change `_defaults` or the `Msstc4Symfony\LoggerBundle\:` resource block.
 
 ### 3. `tests/unit/Monolog/Processor/<Name>ProcessorTest.php`
 
@@ -80,7 +80,7 @@ Tests instantiate the processor directly with mocks. Do not use a Symfony kernel
 
 Watch out: PHPUnit is configured with `failOnRisky`, `failOnWarning`, `beStrictAboutOutputDuringTests`. Every test method must have at least one assertion and must not echo or `var_dump`.
 
-The dev autoload PSR-4 prefix is `MaxShamaev\HealthCheckBundle\Test\Unit\` (a copy-paste leftover from another bundle, documented in CLAUDE.md). Use the same namespace pattern as the neighboring test files — do not "correct" it.
+The dev autoload PSR-4 prefix is `Msstc4Symfony\HealthCheckBundle\Test\Unit\` (a copy-paste leftover from another bundle, documented in CLAUDE.md). Use the same namespace pattern as the neighboring test files — do not "correct" it.
 
 ## After scaffolding
 

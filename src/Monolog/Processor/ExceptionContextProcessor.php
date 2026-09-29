@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Monolog\Processor;
+namespace Msstc4Symfony\LoggerBundle\Monolog\Processor;
 
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionInterface;
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface;
 use Override;
 use Throwable;
 

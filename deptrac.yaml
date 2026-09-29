@@ -24,7 +24,7 @@ deptrac:
         - name: BundleRoot
           collectors:
               - type: classLike
-                value: MaxShamaev\\LoggerBundle\\LoggerBundle
+                value: Msstc4Symfony\\LoggerBundle\\LoggerBundle
 
     ruleset:
         # Monolog processors/formatters/handlers are the core; they depend on nothing in-bundle.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\DependencyInjection;
+namespace Msstc4Symfony\LoggerBundle\DependencyInjection;
 
 use Override;
 use Symfony\Component\Config\FileLocator;

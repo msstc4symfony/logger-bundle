@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Handler;
+namespace Msstc4Symfony\LoggerBundle\Test\Unit\Monolog\Handler;
 
-use MaxShamaev\LoggerBundle\Monolog\Handler\ExceptionFilterDecorator;
-use MaxShamaev\LoggerBundle\Test\Unit\Monolog\Handler\Fixture\RecordingLogger;
+use Msstc4Symfony\LoggerBundle\Monolog\Handler\ExceptionFilterDecorator;
+use Msstc4Symfony\LoggerBundle\Test\Unit\Monolog\Handler\Fixture\RecordingLogger;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LogLevel;

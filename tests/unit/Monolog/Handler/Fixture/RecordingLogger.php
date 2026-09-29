@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Test\Unit\Monolog\Handler\Fixture;
+namespace Msstc4Symfony\LoggerBundle\Test\Unit\Monolog\Handler\Fixture;
 
 use Override;
 use Psr\Log\AbstractLogger;

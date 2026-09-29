@@ -18,9 +18,9 @@ workflow (`on: workflow_call`), который Task 10 подключит так
 ```yaml
 jobs:
   standard:
-    uses: max-shamaev-php/bundle-standard/.github/workflows/php-bundle.yml@v1
+    uses: msstc4symfony/bundle-standard/.github/workflows/php-bundle.yml@v1
     with:
-      slug: max-shamaev-php/logger-bundle
+      slug: msstc4symfony/logger-bundle
       extensions: 'mbstring, xml, ctype, iconv, intl, json'
     secrets:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

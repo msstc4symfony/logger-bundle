@@ -10,19 +10,19 @@ when@prod:
                 path: php://stdout
                 level: info
                 channels: [ "!doctrine", "!event", "!deprecation" ]
-                formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
             errors:
                 type: stream
                 path: php://stdout
                 level: notice
                 channels: [ "doctrine", "event" ]
-                formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
             console:
                 type: console
                 process_psr_3_messages: false
                 level: notice
                 channels: [ "!deprecation" ]
-                formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
 
 when@dev:
     monolog:
@@ -32,16 +32,16 @@ when@dev:
                 path: php://stdout
                 level: debug
                 channels: [ "!doctrine", "!event", "!deprecation" ]
-                formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
             errors:
                 type: stream
                 path: php://stdout
                 level: info
                 channels: [ "doctrine", "event" ]
-                formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
             console:
                 type: console
                 process_psr_3_messages: false
                 level: debug
                 channels: [ "!event", "!doctrine", "!console", "!deprecation" ]
-                formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter

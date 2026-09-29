@@ -52,7 +52,7 @@ jobs:
           files: ./coverage.xml
           flags: phpunit
           fail_ci_if_error: true
-          slug: max-shamaev-php/logger-bundle
+          slug: msstc4symfony/logger-bundle
           token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Upload test results to Codecov
@@ -62,5 +62,5 @@ jobs:
           report_type: test_results
           flags: phpunit
           fail_ci_if_error: true
-          slug: max-shamaev-php/logger-bundle
+          slug: msstc4symfony/logger-bundle
           token: ${{ secrets.CODECOV_TOKEN }}

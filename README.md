@@ -1,7 +1,7 @@
 # Logger Bundle
 
-![Build Status](https://github.com/max-shamaev-php/logger-bundle/actions/workflows/checks.yml/badge.svg?branch=main)
-[![codecov](https://codecov.io/github/max-shamaev-php/logger-bundle/graph/badge.svg?token=Uljr8Pgeto)](https://codecov.io/github/max-shamaev-php/logger-bundle)
+![Build Status](https://github.com/msstc4symfony/logger-bundle/actions/workflows/checks.yml/badge.svg?branch=main)
+[![codecov](https://codecov.io/github/msstc4symfony/logger-bundle/graph/badge.svg?token=Uljr8Pgeto)](https://codecov.io/github/msstc4symfony/logger-bundle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Symfony bundle that extends Monolog with enhanced logging capabilities, including context-aware processors, flexible
@@ -27,7 +27,7 @@ formatters, exception filtering, and Sentry integration.
 Install the bundle via Composer:
 
 ```bash
-composer require max-shamaev-php/logger-bundle
+composer require msstc4symfony/logger-bundle
 ```
 
 If you're using Symfony Flex, the bundle will be automatically registered. Otherwise, add it to your
@@ -36,7 +36,7 @@ If you're using Symfony Flex, the bundle will be automatically registered. Other
 ```php
 return [
     // ...
-    MaxShamaev\LoggerBundle\LoggerBundle::class => ['all' => true],
+    Msstc4Symfony\LoggerBundle\LoggerBundle::class => ['all' => true],
 ];
 ```
 
@@ -71,19 +71,19 @@ when@prod:
         path: php://stdout
         level: info
         channels: [ "!doctrine", "!event", "!deprecation" ]
-        formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
       errors:
         type: stream
         path: php://stdout
         level: notice
         channels: [ "doctrine", "event" ]
-        formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
       console:
         type: console
         process_psr_3_messages: false
         level: notice
         channels: [ "!deprecation" ]
-        formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
 
 when@dev:
   monolog:
@@ -93,19 +93,19 @@ when@dev:
         path: php://stdout
         level: debug
         channels: [ "!doctrine", "!event", "!deprecation" ]
-        formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
       errors:
         type: stream
         path: php://stdout
         level: info
         channels: [ "doctrine", "event" ]
-        formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
       console:
         type: console
         process_psr_3_messages: false
         level: debug
         channels: [ "!event", "!doctrine", "!console", "!deprecation" ]
-        formatter: MaxShamaev\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
 ```
 
 ### Exception Filtering
@@ -132,7 +132,7 @@ If you're using Sentry, add the LoggerIntegration to your Sentry configuration:
 sentry:
   options:
     integrations:
-      - MaxShamaev\LoggerBundle\Sentry\Integration\LoggerIntegration
+      - Msstc4Symfony\LoggerBundle\Sentry\Integration\LoggerIntegration
 ```
 
 This will automatically add `application` and `component` tags to all Sentry events.
@@ -172,8 +172,8 @@ Extracts additional context from exceptions that implement `ContextAwareExceptio
 custom context data to your exceptions:
 
 ```php
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionInterface;
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionTrait;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionTrait;
 
 class PaymentFailedException extends \RuntimeException implements ContextAwareExceptionInterface
 {
@@ -299,8 +299,8 @@ This produces a structured JSON log:
 Create custom exceptions with additional context:
 
 ```php
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionInterface;
-use MaxShamaev\LoggerBundle\Monolog\ContextAwareExceptionTrait;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface;
+use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionTrait;
 
 class OrderProcessingException extends \RuntimeException implements ContextAwareExceptionInterface
 {
@@ -382,4 +382,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## Support
 
 If you encounter any issues or have questions,
-please [open an issue](https://github.com/max-shamaev-php/logger-bundle/issues) on GitHub.
+please [open an issue](https://github.com/msstc4symfony/logger-bundle/issues) on GitHub.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\Sentry\Integration;
+namespace Msstc4Symfony\LoggerBundle\Sentry\Integration;
 
 use Sentry\Event;
 use Sentry\Integration\IntegrationInterface;

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace MaxShamaev\LoggerBundle\DependencyInjection\Compiler;
+namespace Msstc4Symfony\LoggerBundle\DependencyInjection\Compiler;
 
-use MaxShamaev\LoggerBundle\Monolog\Handler\ExceptionFilterDecorator;
+use Msstc4Symfony\LoggerBundle\Monolog\Handler\ExceptionFilterDecorator;
 use Override;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
