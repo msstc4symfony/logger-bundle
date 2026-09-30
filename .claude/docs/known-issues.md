@@ -25,7 +25,7 @@ Job сравнивает с последним тегом `v1.0.1`, где names
 monolog-bundle 3.x поддерживает Symfony максимум 7.4; свежий Symfony 8 ставит 4.x.
 С `^3.0` бандл не устанавливался в проект на Symfony 8, а CI этого не видел: ячейка
 «Symfony 8» фиксировала только framework-bundle/console, и Composer оставлял
-`http-kernel` и остальное на 7.4. С `bundle-standard` v1.3.0 такая ячейка падает
+`http-kernel` и остальное на 7.4. С `bundle-standard` v1.3.1 (фиксация http-kernel/DI/config + проверка) такая ячейка падает
 (шаг «Assert the matrix Symfony version was installed»).
 
 ## `sentry/sentry` в `require-dev` обоих манифестов — не "тайди" обратно
