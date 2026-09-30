@@ -24,11 +24,18 @@ formatters, exception filtering, and Sentry integration.
 
 ## Installation
 
-Install the bundle via Composer:
+The package lives in a private GitHub repository, so register it as a VCS
+repository first. `no-api` makes Composer clone over SSH instead of calling the
+GitHub API, which would need a token for a private repository:
 
 ```bash
+composer config repositories.msstc4symfony-logger '{"type": "vcs", "url": "git@github.com:msstc4symfony/logger-bundle.git", "no-api": true}'
 composer require msstc4symfony/logger-bundle
 ```
+
+Without a GitHub token Composer cannot download dist archives of a private
+repository; either add one (`composer config github-oauth.github.com <token>`)
+or install from source (`composer require --prefer-source ...`).
 
 If you're using Symfony Flex, the bundle will be automatically registered. Otherwise, add it to your
 `config/bundles.php`:
