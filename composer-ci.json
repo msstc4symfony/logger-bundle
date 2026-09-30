@@ -28,7 +28,7 @@
     "composer-runtime-api": ">=2.2",
     "symfony/framework-bundle": "^6.4|^7.0|^8.0",
     "symfony/security-bundle": "^6.4|^7.0|^8.0",
-    "symfony/monolog-bundle": "^3.0"
+    "symfony/monolog-bundle": "^3.10|^4.0"
   },
   "require-dev": {
     "deptrac/deptrac": "^4.6",

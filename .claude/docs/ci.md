@@ -8,7 +8,7 @@ workflow (`on: workflow_call`), подключённый в `checks.yml` так:
 ```yaml
 jobs:
   standard:
-    uses: msstc4symfony/bundle-standard/.github/workflows/php-bundle.yml@v1.2.0
+    uses: msstc4symfony/bundle-standard/.github/workflows/php-bundle.yml@v1.3.0
     with:
       slug: msstc4symfony/logger-bundle
       extensions: 'mbstring, xml, ctype, iconv, intl, json'
@@ -43,7 +43,7 @@ jobs:
 `bundle-standard`. Изменения в логике самого гейта (новый шаг проверки,
 новый инструмент) вносятся в `bundle-standard`, а не копированием сюда.
 
-Версия стандарта закреплена точным тегом (`@v1.2.0`): GitHub не понимает
+Версия стандарта закреплена точным тегом (`@v1.3.0`): GitHub не понимает
 диапазоны, обновление стандарта — явная правка этой строки.
 
 Codecov выключен (`run-codecov` по умолчанию `false`): в организации
