@@ -86,7 +86,7 @@ Read these when the task touches the area:
 - [`.claude/docs/tooling.md`](.claude/docs/tooling.md) — `make check`
   breakdown, baseline policy, two-manifest setup, deptrac rules.
 - [`.claude/docs/ci.md`](.claude/docs/ci.md) — reusable-workflow model
-  from `bundle-standard@v1.1.0`, how to change the matrix.
+  from `bundle-standard@v1.2.0`, how to change the matrix.
 - [`.claude/docs/known-issues.md`](.claude/docs/known-issues.md) —
   gotchas and deferred work. **Check this before chasing a "weird"
   failure.**
