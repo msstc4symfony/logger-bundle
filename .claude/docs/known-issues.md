@@ -28,6 +28,13 @@ monolog-bundle 3.x поддерживает Symfony максимум 7.4; све
 `http-kernel` и остальное на 7.4. С `bundle-standard` v1.3.1 (фиксация http-kernel/DI/config + проверка) такая ячейка падает
 (шаг «Assert the matrix Symfony version was installed»).
 
+## `symfony/yaml` — обязательная зависимость
+
+`LoggerExtension` грузит `services.yaml` через `YamlFileLoader`, но до `v1.1.1`
+`symfony/yaml` не был объявлен: приложение без него падало при сборке контейнера,
+а локально и в CI пакет приходил транзитивно (deptrac). С `bundle-standard` v1.5.0
+верификатор требует `symfony/yaml`, если `src/` использует `YamlFileLoader`.
+
 ## `sentry/sentry` в `require-dev` обоих манифестов — не "тайди" обратно
 
 См. `tooling.md` — `sentry/sentry` живёт и в `composer.json`, и в
