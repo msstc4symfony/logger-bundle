@@ -11,6 +11,7 @@ use Monolog\LogRecord;
 use Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter;
 use Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\TestWith;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -45,6 +46,25 @@ final class SwitchFormatterTest extends TestCase
         $actual = $formater->formatBatch($records);
 
         self::assertSame($expected, $actual);
+    }
+
+    #[TestWith([true])]
+    #[TestWith([false])]
+    public function testFormatBatchPutsEveryRecordOnItsOwnLine(bool $humanReadable): void
+    {
+        $formatter = new SwitchFormatter(
+            new LineFormatter(),
+            new JsonFormatter(JsonFormatter::BATCH_MODE_NEWLINES, appendNewline: true),
+            new RequestStack(),
+            $humanReadable ? '1' : null,
+        );
+        $record = new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message');
+
+        $lines = explode("\n", rtrim($formatter->formatBatch([$record, $record]), "\n"));
+
+        self::assertCount(2, $lines);
+        self::assertSame($lines[0], $lines[1]);
+        self::assertStringContainsString('test message', $lines[0]);
     }
 
     /**

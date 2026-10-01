@@ -88,3 +88,17 @@ no-op, потому что значение уже было типизирова
 `SentrySdk`/`Scope`-моки или интеграционный прогон с реальным SDK), а не
 полагаться на PHPStan — статический анализ этот класс no-op-сужений типов
 не ловит.
+
+## `JsonFormatter` без перевода строки склеивал записи в одну строку (до v1.1.2)
+
+`Monolog\Formatter\JsonFormatter` по умолчанию `appendNewline = false`, а наш
+`services.yaml` биндил только `$batchMode`. В stream-хендлерах (CLI, Messenger-воркеры)
+записи писались подряд `…}{"message"…` — Loki/Alloy и любой line-based шиппер
+видят одну гигантскую строку. Под RoadRunner (`logs.mode: raw`) баг маскировался:
+RR сам режет вывод воркера. Исправлено аргументом `$appendNewline: true` у сервиса
+`JsonFormatter` в `services.yaml` (точечно, не `_defaults.bind`) — дефолт конструктора
+не трогали, т.к. смена default value параметра = BC-break для Roave. Покрыто
+`KernelLoggingTest::testJsonFormatterWritesOneRecordPerLine` (через реальный сервис).
+Заодно `SwitchFormatter::formatBatch` теперь делегирует `formatBatch` выбранного
+форматтера: раньше он склеивал `format()` через `PHP_EOL`, и между записями batch
+появлялась пустая строка (у LineFormatter — всегда).

@@ -28,6 +28,11 @@ services:
       - '../../Monolog/Processor/'
       - '../../LoggerBundle.php'
 
+  # Stream handlers need one JSON document per line; the Monolog default is false.
+  Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter:
+    arguments:
+      $appendNewline: true
+
   # Processors
   Msstc4Symfony\LoggerBundle\Monolog\Processor\ConsoleProcessor:
     tags:

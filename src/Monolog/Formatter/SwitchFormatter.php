@@ -36,11 +36,9 @@ final readonly class SwitchFormatter implements FormatterInterface
     #[Override]
     public function formatBatch(array $records): string
     {
-        foreach ($records as $key => $record) {
-            $records[$key] = $this->format($record);
-        }
-
-        return implode(PHP_EOL, $records);
+        return $this->isHumanOwner()
+            ? $this->humanReadableFormatter->formatBatch($records)
+            : $this->logStorageReadableFormatter->formatBatch($records);
     }
 
     private function isHumanOwner(): bool

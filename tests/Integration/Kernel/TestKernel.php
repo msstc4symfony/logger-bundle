@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Msstc4Symfony\LoggerBundle\Test\Integration\Kernel;
 
 use Msstc4Symfony\LoggerBundle\LoggerBundle;
+use Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter;
 use Override;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
@@ -56,5 +57,6 @@ final class TestKernel extends Kernel
         // Unused services are removed on compile; the tests fetch these.
         $container->services()->alias('test.main_handler', 'monolog.handler.main')->public();
         $container->services()->alias('test.logger', 'logger')->public();
+        $container->services()->alias('test.json_formatter', JsonFormatter::class)->public();
     }
 }
