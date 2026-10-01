@@ -6,12 +6,10 @@ use Rector\CodingStyle\Rector\Catch_\CatchExceptionNameMatchingTypeRector;
 use Rector\CodingStyle\Rector\PostInc\PostIncDecToPreIncDecRector;
 use Rector\CodingStyle\Rector\Stmt\NewlineAfterStatementRector;
 use Rector\Config\RectorConfig;
-use Rector\EarlyReturn\Rector\If_\ChangeOrIfContinueToMultiContinueRector;
-use Rector\EarlyReturn\Rector\Return_\ReturnBinaryOrToEarlyReturnRector;
+use Rector\Symfony\Configs\Rector\Closure\FromServicePublicToDefaultsPublicRector;
+use Rector\Symfony\Configs\Rector\Closure\ServiceSettersToSettersAutodiscoveryRector;
 use Rector\Php80\Rector\Class_\ClassPropertyAssignToConstructorPromotionRector;
 use Rector\PHPUnit\AnnotationsToAttributes\Rector\Class_\CoversAnnotationWithValueToAttributeRector;
-use Rector\Strict\Rector\Empty_\DisallowedEmptyRuleFixerRector;
-use Rector\Symfony\CodeQuality\Rector\ClassMethod\ActionSuffixRemoverRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -21,7 +19,6 @@ return RectorConfig::configure()
     ->withoutParallel()
     ->withPhpSets(php84: true)
     ->withComposerBased(doctrine: true, phpunit: true, symfony: true)
-    ->withSymfonyContainerPhp(__DIR__ . '/var/cache/dev/App_KernelDevDebugContainer.php')
     ->withAttributesSets(symfony: true, doctrine: true, mongoDb: true, phpunit: true)
     ->withPreparedSets(
         deadCode: true,
@@ -42,16 +39,15 @@ return RectorConfig::configure()
     ->withImportNames(removeUnusedImports: true)
     ->withSkip(
         [
+            // Bundle service config registers optional integrations explicitly behind
+            // interface_exists() guards: no public defaults, no class autodiscovery.
+            FromServicePublicToDefaultsPublicRector::class,
+            ServiceSettersToSettersAutodiscoveryRector::class,
             ClassPropertyAssignToConstructorPromotionRector::class,
-            ChangeOrIfContinueToMultiContinueRector::class,
-            ReturnBinaryOrToEarlyReturnRector::class,
             PostIncDecToPreIncDecRector::class,
-            DisallowedEmptyRuleFixerRector::class,
             NewlineAfterStatementRector::class,
             CatchExceptionNameMatchingTypeRector::class,
             CoversAnnotationWithValueToAttributeRector::class,
-            ActionSuffixRemoverRector::class,
-            __DIR__ . '/src/Sentry/*',
         ],
     )
 ;

@@ -69,9 +69,9 @@ The PSR-4 resource scan **excludes** `Monolog/Processor/`, so autoconfiguration 
 
 Do not remove the `# Processors` comment block. Do not change `_defaults` or the `Msstc4Symfony\LoggerBundle\:` resource block.
 
-### 3. `tests/unit/Monolog/Processor/<Name>ProcessorTest.php`
+### 3. `tests/Unit/Monolog/Processor/<Name>ProcessorTest.php`
 
-Match the existing test style. Look at `tests/unit/Monolog/Processor/WebProcessorTest.php` (HTTP-context processor with `RequestStack`) or `EnvironmentProcessorTest.php` (no Symfony deps) — pick the closer template. Required coverage:
+Match the existing test style. Look at `tests/Unit/Monolog/Processor/WebProcessorTest.php` (HTTP-context processor with `RequestStack`) or `EnvironmentProcessorTest.php` (no Symfony deps) — pick the closer template. Required coverage:
 
 - One test that the processor adds the expected keys with the expected types when its data source is available.
 - One test that the processor returns the record unchanged (no keys added) when the data source is absent — exercise every guard clause.

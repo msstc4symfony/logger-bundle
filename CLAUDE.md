@@ -34,7 +34,7 @@ All in `Makefile` (the standard's 7-target layout):
 - `make help` — list targets (default goal).
 
 Single test: `vendor/bin/phpunit --filter <TestName>` or
-`vendor/bin/phpunit tests/unit/Monolog/Formatter/JsonFormatterTest.php`.
+`vendor/bin/phpunit tests/Unit/Monolog/Formatter/JsonFormatterTest.php`.
 
 PHPUnit config is strict (`failOnRisky`, `failOnWarning`,
 `failOnPhpunitDeprecation`, `beStrictAboutOutputDuringTests`) — silence
@@ -86,7 +86,7 @@ Read these when the task touches the area:
 - [`.claude/docs/tooling.md`](.claude/docs/tooling.md) — `make check`
   breakdown, baseline policy, two-manifest setup, deptrac rules.
 - [`.claude/docs/ci.md`](.claude/docs/ci.md) — reusable-workflow model
-  from `bundle-standard@v1.6.2`, how to change the matrix.
+  from `bundle-standard@v1.7.0`, how to change the matrix.
 - [`.claude/docs/known-issues.md`](.claude/docs/known-issues.md) —
   gotchas and deferred work. **Check this before chasing a "weird"
   failure.**

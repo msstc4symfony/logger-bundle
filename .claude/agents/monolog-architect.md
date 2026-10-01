@@ -19,7 +19,7 @@ These three files must stay consistent. A change in one usually requires a chang
 **Adding a Monolog processor:**
 - Place class in `src/Monolog/Processor/`, implement `Monolog\Processor\ProcessorInterface`.
 - Add an explicit entry in `services.yaml` with `tags: [{ name: monolog.processor }]`. The autowire scan will not pick it up.
-- Add a unit test in `tests/unit/Monolog/Processor/` matching the existing test style (direct instantiation with mocked dependencies, no kernel).
+- Add a unit test in `tests/Unit/Monolog/Processor/` matching the existing test style (direct instantiation with mocked dependencies, no kernel).
 
 **Adding a formatter:**
 - Place in `src/Monolog/Formatter/`. This directory **is** covered by the resource scan, so no explicit `services.yaml` entry is needed unless you need custom args.
@@ -39,7 +39,7 @@ These three files must stay consistent. A change in one usually requires a chang
 - If sourced from an env var, mirror the `'%env(default:logger_bundle.xxxDefault:ENV_VAR_NAME)%'` pattern used for `applicationName` / `componentName`.
 
 **Sentry code:**
-- Anything that imports `Sentry\*` must live under `src/Sentry/` so it stays excluded from PHPStan (`phpstan.dist.neon`) and Rector (`rector.php` skips `src/Sentry/*`). Do not move Sentry code out of that directory.
+- Anything that imports `Sentry\*` lives under `src/Sentry/` (its own deptrac layer). PHPStan and Rector analyse it like any other code: `sentry/sentry` is in `require-dev` of both manifests.
 
 ## Workflow
 

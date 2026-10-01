@@ -10,13 +10,13 @@ use Sentry\SentrySdk;
 use Sentry\State\Scope;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
-final class LoggerIntegration implements IntegrationInterface
+final readonly class LoggerIntegration implements IntegrationInterface
 {
     public function __construct(
         #[Autowire(param: 'logger_bundle.applicationName')]
-        private readonly string $applicationName,
+        private string $applicationName,
         #[Autowire(param: 'logger_bundle.componentName')]
-        private readonly string $componentName,
+        private string $componentName,
     ) {
     }
 

@@ -10,7 +10,7 @@
 
 Запуск: `make test` (= `vendor/bin/phpunit`). Один тест:
 `vendor/bin/phpunit --filter <TestName>` или путь к файлу, например
-`vendor/bin/phpunit tests/unit/Monolog/Formatter/JsonFormatterTest.php`.
+`vendor/bin/phpunit tests/Unit/Monolog/Formatter/JsonFormatterTest.php`.
 
 `phpunit.xml.dist` — строгий: `failOnRisky`, `failOnWarning`,
 `failOnPhpunitDeprecation`, `beStrictAboutOutputDuringTests`. Новое
@@ -19,7 +19,7 @@
 
 ## `RecordingLogger` — образец фикстуры
 
-`tests/unit/Monolog/Handler/Fixture/RecordingLogger.php` — in-memory PSR-3
+`tests/Unit/Monolog/Handler/Fixture/RecordingLogger.php` — in-memory PSR-3
 логгер (`extends AbstractLogger`), который пишет каждый вызов `log()` в
 публичный `list<array{level: string, message: string|Stringable, context: array<array-key, mixed>}> $records`.
 Используется в `ExceptionFilterDecoratorTest` для проверки, что декоратор

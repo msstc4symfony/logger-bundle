@@ -66,5 +66,5 @@
 полностью анализируется PHPStan на обоих манифестах (исключение из
 `phpstan.dist.neon` убрано). Причина и история — в
 [`tooling.md`](tooling.md) и [`known-issues.md`](known-issues.md).
-Rector по-прежнему пропускает `src/Sentry/*` (`rector.php`, `withSkip`) —
-это отдельное и не связанное с PHPStan решение, трогать не нужно.
+Rector тоже обрабатывает `src/Sentry/` (общий `rector.php` из `bundle-standard`
+без исключений; с 2026-10-01 UTC).

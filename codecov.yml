@@ -17,8 +17,3 @@ ignore:
   - "tests/**"
   - "vendor/**"
   - "doc/**"
-  - "src/DependencyInjection/**"
-  - "src/LoggerBundle.php"
-  - "src/Monolog/ContextAwareExceptionTrait.php"
-  - "src/Monolog/Handler/ExceptionFilterDecorator.php"
-  - "src/Sentry/**"

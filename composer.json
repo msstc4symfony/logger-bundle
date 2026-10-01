@@ -22,7 +22,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Msstc4Symfony\\LoggerBundle\\Test\\Unit\\": "tests/unit/"
+      "Msstc4Symfony\\LoggerBundle\\Test\\": "tests/"
     }
   },
   "require": {

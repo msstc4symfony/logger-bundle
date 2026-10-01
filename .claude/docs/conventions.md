@@ -29,9 +29,8 @@
 ## Файл/неймспейс
 
 - PSR-4 root: `Msstc4Symfony\LoggerBundle\` → `src/`.
-- Тестовый PSR-4 root: `Msstc4Symfony\LoggerBundle\Test\Unit\` → `tests/unit/`
-  (см. `composer.json`/`composer-ci.json` — актуально, никакого
-  copy/paste-дефекта здесь больше нет).
+- Тестовый PSR-4 root: `Msstc4Symfony\LoggerBundle\Test\` → `tests/` (наборы `tests/Unit`,
+  `tests/Integration` — раскладка общая для всех бандлов, `bundle-standard` 1.7).
 - Один класс на файл. Классы `final` (или `final readonly`, если все
   свойства immutable).
 
