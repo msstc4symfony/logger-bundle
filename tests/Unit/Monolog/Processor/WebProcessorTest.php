@@ -28,6 +28,7 @@ final class WebProcessorTest extends TestCase
      */
     public static function getDataForInvoke(): array
     {
+        // The RequestStack constructor ignores its argument before Symfony 7.2, so push explicitly.
         $requestStack = new RequestStack([Request::create('https://example.com')]);
 
         return [

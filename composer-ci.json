@@ -30,6 +30,7 @@
     "php": ">=8.4",
     "ext-json": "*",
     "composer-runtime-api": ">=2.2",
+    "monolog/monolog": "^3.0",
     "symfony/framework-bundle": "^6.4|^7.0|^8.0",
     "symfony/security-bundle": "^6.4|^7.0|^8.0",
     "symfony/monolog-bundle": "^3.10|^4.0",
@@ -44,7 +45,7 @@
     "phpstan/phpstan-beberlei-assert": "^2.0",
     "phpstan/phpstan-strict-rules": "^2.0",
     "phpstan/phpstan-symfony": "^2.0",
-    "phpunit/phpunit": ">=10.5",
+    "phpunit/phpunit": ">=11.5.50",
     "rector/rector": "^2.1",
     "roave/backward-compatibility-check": "^8.20",
     "roave/security-advisories": "dev-latest",
@@ -60,6 +61,7 @@
     "sort-packages": true
   },
   "conflict": {
+    "symfony/error-handler": "<6.4.44 || >=7.0,<7.4.17",
     "symfony/symfony": "*"
   },
   "extra": {
