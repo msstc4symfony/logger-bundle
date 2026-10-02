@@ -8,7 +8,7 @@ under `.claude/docs/`; this file stays lean.
 Symfony bundle (`msstc4symfony/logger-bundle`, namespace `Msstc4Symfony\LoggerBundle`)
 that extends Monolog with context-aware processors, formatters, an
 exception-filtering decorator, and an opt-in Sentry integration. Requires
-PHP >= 8.4 and Symfony 6.4 LTS / 7.x / 8.x. Library code only — no host
+PHP >= 8.4, Monolog 3 and Symfony 6.4 LTS / 7.x / 8.x. Library code only — no host
 application in the repo.
 
 PHP 8.4 is mandatory: the bundle uses native `array_any()`, first-class
@@ -22,7 +22,7 @@ idioms over by analogy.
 All in `Makefile` (the standard's 7-target layout):
 
 - `make check` — full quality gate: `php -l` on every non-vendor PHP file,
-  PHPStan (level 9, `--memory-limit=512M`), PHP-CS-Fixer check,
+  PHPStan (level 10, `--memory-limit=512M`), PHP-CS-Fixer check,
   `composer validate --strict --no-check-publish`, `composer audit`,
   Rector dry-run, `deptrac analyse`.
 - `make test` — `vendor/bin/phpunit`.
@@ -81,12 +81,13 @@ Read these when the task touches the area:
   context-aware exceptions, Sentry integration.
 - [`.claude/docs/conventions.md`](.claude/docs/conventions.md) — PHP 8.4
   idioms, naming, comment policy, baseline-growth ban.
-- [`.claude/docs/testing.md`](.claude/docs/testing.md) — the single `unit`
-  suite, no kernel harness, `RecordingLogger` fixture.
+- [`.claude/docs/testing.md`](.claude/docs/testing.md) — `unit` and
+  `integration` suites, the `TestKernel` harness, `RecordingLogger` fixture,
+  Sentry global-state reset.
 - [`.claude/docs/tooling.md`](.claude/docs/tooling.md) — `make check`
   breakdown, baseline policy, two-manifest setup, deptrac rules.
 - [`.claude/docs/ci.md`](.claude/docs/ci.md) — reusable-workflow model
-  from `bundle-standard@v1.7.1`, how to change the matrix.
+  from `bundle-standard@v1.8.0`, prefer-lowest cell, Infection thresholds.
 - [`.claude/docs/known-issues.md`](.claude/docs/known-issues.md) —
   gotchas and deferred work. **Check this before chasing a "weird"
   failure.**

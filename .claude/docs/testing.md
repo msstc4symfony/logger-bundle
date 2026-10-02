@@ -1,12 +1,20 @@
 # Тестирование
 
-## Единственный suite
+## Два suite
 
-`phpunit.xml.dist` объявляет один suite — `unit`, директория `tests`.
-Никакого Symfony kernel / integration-харнесса в бандле нет: процессоры и
-форматтеры инстанцируются напрямую с моками их зависимостей
-(`TokenStorageInterface`, `RequestStack` и т.п. — обычные PHPUnit mocks/stubs,
-без `KernelTestCase`).
+`phpunit.xml.dist` (шаблон `bundle-standard`) объявляет `unit` (`tests/Unit`)
+и `integration` (`tests/Integration`).
+
+- **unit** — процессоры, форматтеры, декоратор и Sentry-интеграция
+  инстанцируются напрямую, зависимости — обычные PHPUnit stubs/реальные
+  объекты (`RequestStack`, `TokenStorageInterface`), без `KernelTestCase`.
+  Infection гоняет только этот suite (`infection.json5`).
+- **integration** — `tests/Integration/Kernel/TestKernel.php` (MicroKernel:
+  FrameworkBundle + MonologBundle + LoggerBundle, кэш в `sys_get_temp_dir()`
+  на PID) и `KernelLoggingTest`: проверка реальной проводки (процессоры,
+  фильтр исключений, `JsonFormatter` с `$appendNewline: true`).
+  `php_errors.log: false` в ядре — иначе глобальный хендлер переживает ядро и
+  срабатывает `failOnRisky`.
 
 Запуск: `make test` (= `vendor/bin/phpunit`). Один тест:
 `vendor/bin/phpunit --filter <TestName>` или путь к файлу, например
@@ -32,6 +40,19 @@ either пропускает, либо гасит запись, без моков
 
 `make test-with-coverage` — HTML-отчёт в `coverage/`.
 
-Известный пробел: `src/Sentry/Integration/LoggerIntegration.php` не имеет
-тестов вообще (см. `known-issues.md`) — Task 9 менял в нём `instanceof`-проверку
-без регрессионного теста.
+## Sentry: глобальное состояние SDK
+
+`tests/Unit/Sentry/Integration/LoggerIntegrationTest.php` работает с реальным
+SDK (`ClientBuilder` без DSN → null-транспорт). `Scope::addGlobalEventProcessor()`
+пишет в приватный статический `Scope::$globalEventProcessors`, а сборка
+`Client` сама вызывает `setupOnce()` через процессный `IntegrationRegistry`
+(только в первый раз за процесс). Поэтому тест сбрасывает этот статический
+массив через `ReflectionProperty` в `setUp`/`tearDown` и после сборки клиента,
+а затем вызывает `setupOnce()` явно; `tearDown` делает `SentrySdk::init()`.
+Без сброса тесты зависят от порядка запуска.
+
+## `RequestStack` в тестах — через `push()`
+
+`new RequestStack([$request])` работает только с Symfony 7.2; на 6.4 аргумент
+игнорируется и стек пуст (ячейка prefer-lowest это поймала). В тестах —
+`new RequestStack()` + `push()`.

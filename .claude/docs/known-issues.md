@@ -77,17 +77,14 @@ PHPSTAN_CONFIG=phpstan-ci.neon make check
 make test
 ```
 
-## `src/Sentry/Integration/LoggerIntegration.php` не покрыт тестами
+## `LoggerIntegration` покрыт тестами (с v1.2.0)
 
-Файл вообще не имеет юнит-тестов. Task 9 поменял в нём
-`$integration instanceof IntegrationInterface` на `instanceof self`
-(исправление статически некорректного сужения типа — старая проверка была
-no-op, потому что значение уже было типизировано `?IntegrationInterface`) —
-без единого теста, который поймал бы регрессию. При следующей правке этого
-файла стоит сначала добавить тест на `setupOnce()` (например, через
-`SentrySdk`/`Scope`-моки или интеграционный прогон с реальным SDK), а не
-полагаться на PHPStan — статический анализ этот класс no-op-сужений типов
-не ловит.
+До v1.2.0 у `src/Sentry/Integration/LoggerIntegration.php` не было тестов.
+Теперь `LoggerIntegrationTest` проверяет: теги `application`/`component`
+ставятся; ровно один глобальный процессор; значения берутся из интеграции,
+зарегистрированной в клиенте **текущего** хаба (а не из экземпляра, вызвавшего
+`setupOnce()`); без интеграции или без клиента событие возвращается без тегов.
+Особенности глобального состояния SDK — в [`testing.md`](testing.md).
 
 ## `JsonFormatter` без перевода строки склеивал записи в одну строку (до v1.1.2)
 
@@ -102,3 +99,44 @@ RR сам режет вывод воркера. Исправлено аргум�
 Заодно `SwitchFormatter::formatBatch` теперь делегирует `formatBatch` выбранного
 форматтера: раньше он склеивал `format()` через `PHP_EOL`, и между записями batch
 появлялась пустая строка (у LineFormatter — всегда).
+
+## prefer-lowest: что пришлось поднять (v1.2.0, bundle-standard v1.8.0)
+
+Ячейка `--prefer-lowest` (PHP 8.4, Symfony 6.4) падала по четырём причинам:
+
+1. **Monolog 2.** `monolog/monolog` не был объявлен — приходил транзитивно через
+   `symfony/monolog-bundle` 3.10 → `symfony/monolog-bridge` 5.4 → Monolog 2.3.
+   Код целиком на Monolog 3 API (`LogRecord`, `Level`), отсюда fatal
+   `SwitchFormatter::format(LogRecord)` vs `format(array)`. Теперь
+   `monolog/monolog: ^3.0` в `require` обоих манифестов. Реальный минимум
+   проверен: весь suite зелёный на 3.0.0 (3.5 не нужен).
+2. **PHPUnit 10.5.** Шаблонный `phpunit.xml.dist` использует
+   `<source ignoreIndirectDeprecations>`, которого нет в схеме 10.5 → PHPUnit
+   warning → `failOnWarning`. Composer к тому же блокирует 11.0–11.5.49 по
+   security advisory (PKSA-z3gr-8qht-p93v). Минимум — `>=11.5.50` в обоих
+   манифестах.
+3. **`RequestStack([$request])`** в `WebProcessorTest` — конструктор с
+   запросами появился в Symfony 7.2; на 6.4 стек пустой. Тест переведён на
+   `push()`.
+4. **`symfony/error-handler` < 6.4.44 (и 7.0–7.4.16)** оставляет
+   зарегистрированный exception handler, когда ошибками уже управляет кто-то
+   другой (PHPUnit) — `FrameworkBundle::boot()` → `ErrorHandler::register()`;
+   в `KernelLoggingTest` это `Risky: Test code or tested code did not remove its
+   own exception handlers`. Плюс 6.4.0 на PHP 8.4 даёт `E_STRICT is deprecated`.
+   Исправлено в 6.4.44 / 7.4.17 (8.x не затронут). Компонент не листится в
+   нашем `require`, а шаг стандарта «Pin Symfony version» переписал бы любой
+   констрейнт `symfony/*` на `6.4.*`, поэтому минимум задан `conflict`-ом
+   **только в `composer-ci.json`**: в рантайме потребителей это не баг
+   (проявляется только под PHPUnit), навязывать им конфликт незачем.
+
+Воспроизведение локально: копия репо в `$TMPDIR`, `COMPOSER=composer-ci.json`,
+`composer remove --dev --no-update roave/backward-compatibility-check deptrac/deptrac`,
+`composer require --no-update symfony/{framework-bundle,console,http-kernel,dependency-injection,config,security-bundle,yaml}:6.4.*`,
+`composer update --prefer-lowest --prefer-stable`, `vendor/bin/phpunit`.
+
+## `JsonFormatter::collectMetrics()` — тип `array<mixed>`, не `array<string, mixed>`
+
+На level 10 PHPStan видит `normalizeRecord()['context']` как `array<mixed>`
+(контекст Monolog допускает int-ключи). Прежняя аннотация `array<string, mixed>`
+была ложной; исправлена сигнатура приватного метода (заодно убран бесполезный
+сквозной `$extra`), а не добавлен каст/ignore.

@@ -58,7 +58,10 @@
 `Sentry\Integration\LoggerIntegration` — **opt-in**: не автоконфигурируется,
 потребитель сам добавляет её в `sentry.options.integrations`
 (`config/packages/sentry.yaml`). Она добавляет теги `application`/`component`
-в каждое событие Sentry через `Scope::addGlobalEventProcessor()`.
+в каждое событие Sentry через `Scope::addGlobalEventProcessor()`. Процессор
+статичен и при каждом событии берёт интеграцию из клиента текущего хаба
+(`SentrySdk::getCurrentHub()->getIntegration(self::class)`); нет клиента или
+интеграции — событие уходит без тегов. Покрыто `LoggerIntegrationTest`.
 
 После Task 9 `sentry/sentry` — **require-dev** в обоих манифестах
 (`composer.json` и `composer-ci.json`), поэтому класс

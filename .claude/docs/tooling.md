@@ -7,7 +7,7 @@
 | Шаг | Инструмент | Конфиг |
 |---|---|---|
 | `php -l` | синтаксис | — |
-| PHPStan | level 9, `--memory-limit=512M` | `phpstan.dist.neon` (локально) / `phpstan-ci.neon` (CI, через `PHPSTAN_CONFIG`) |
+| PHPStan | level 10, `--memory-limit=512M` | `phpstan.dist.neon` (локально) / `phpstan-ci.neon` (CI, через `PHPSTAN_CONFIG`) |
 | PHP-CS-Fixer | check-режим | `.php-cs-fixer.dist.php` |
 | `composer validate --strict --no-check-publish` | манифест | — |
 | `composer audit` | security advisories | — |
@@ -32,7 +32,9 @@ make test
   `sentry/sentry` (см. ниже — не убирать).
 - `composer-ci.json` — тот же runtime plus полный набор опциональных
   dev-зависимостей для CI: `deptrac/deptrac`, `infection/infection`,
-  `roave/backward-compatibility-check`, и тоже `sentry/sentry`.
+  `roave/backward-compatibility-check`, и тоже `sentry/sentry`. Только здесь
+  есть `conflict` на `symfony/error-handler` `<6.4.44 || >=7.0,<7.4.17` —
+  причина в [`known-issues.md`](known-issues.md) (prefer-lowest).
 
 **Оба манифеста ставятся в один и тот же `vendor/`.** Если проверяешь
 поведение, зависящее от того, какой манифест реально установлен —
