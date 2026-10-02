@@ -34,6 +34,11 @@ jobs:
 | `run-prefer-lowest` | `true` | доп. ячейка PHPUnit: первая PHP × первая Symfony, `--prefer-lowest` |
 | `run-codecov` | `false` | загрузка покрытия в Codecov; нужен секрет `CODECOV_TOKEN` |
 
+**Symfony 7.x в CI = только 7.4.17+.** `composer-ci.json` конфликтует с
+`symfony/error-handler` `>=7.0,<7.4.17` (и `<6.4.44`), см. `known-issues.md`
+«prefer-lowest». Ячейка с `symfony-versions` 7.0–7.3 не разрешится — это
+ожидаемо (ветки EOL), рантайм-констрейнт `^7.0` для потребителей не сужен.
+
 **Менять матрицу нужно через входы `with:` в `checks.yml` бандла, а не
 форком workflow.** Форк ломает единый источник правды по всему семейству
 бандлов — любая правка потом расходится вручную по каждому репозиторию.

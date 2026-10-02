@@ -46,7 +46,7 @@ final class LoggerIntegrationTest extends TestCase
     {
         new LoggerIntegration('billing', 'worker')->setupOnce();
 
-        $processors = new ReflectionProperty(Scope::class, 'globalEventProcessors')->getValue();
+        $processors = $this->globalEventProcessors()->getValue();
         self::assertIsArray($processors);
         self::assertCount(1, $processors);
     }
@@ -57,8 +57,9 @@ final class LoggerIntegrationTest extends TestCase
 
         new LoggerIntegration('stale-app', 'stale-component')->setupOnce();
         $event = Event::createEvent();
-        new Scope()->applyToEvent($event);
+        $processed = new Scope()->applyToEvent($event);
 
+        self::assertSame($event, $processed);
         self::assertSame(['application' => 'current-app', 'component' => 'current-component'], $event->getTags());
     }
 
@@ -100,6 +101,16 @@ final class LoggerIntegrationTest extends TestCase
 
     private function resetGlobalEventProcessors(): void
     {
-        new ReflectionProperty(Scope::class, 'globalEventProcessors')->setValue(null, []);
+        $this->globalEventProcessors()->setValue(null, []);
+    }
+
+    // The SDK has no public reset for its process-wide processor list; fail loudly if the internal field moves.
+    private function globalEventProcessors(): ReflectionProperty
+    {
+        if (!property_exists(Scope::class, 'globalEventProcessors')) {
+            self::fail(Scope::class . '::$globalEventProcessors is gone; update how this test resets global event processors.');
+        }
+
+        return new ReflectionProperty(Scope::class, 'globalEventProcessors');
     }
 }

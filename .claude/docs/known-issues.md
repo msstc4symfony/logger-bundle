@@ -141,3 +141,20 @@ RR сам режет вывод воркера. Исправлено аргум�
 (контекст Monolog допускает int-ключи). Прежняя аннотация `array<string, mixed>`
 была ложной; исправлена сигнатура приватного метода (заодно убран бесполезный
 сквозной `$extra`), а не добавлен каст/ignore.
+
+## Ревью v1.2.0 (исправления в v1.2.1, 2026-10-02 UTC) — что отклонено и почему
+
+- **Minor 2 — `PushRequestToRequestStackConstructorRector` в `withSkip()`**: не
+  сделано локально. `rector.php` проверяется `bundle-standard` как `ExactFileRule`
+  (байт-в-байт с `templates/rector.php`), локальная правка уронит шаг
+  verify-standard. Вынесено в follow-up для `bundle-standard`. Риск для `src/`
+  сейчас нулевой: `src/` не конструирует `RequestStack` (только принимает через DI),
+  правилу нечего переписывать; плюс ячейка prefer-lowest (Symfony 6.4) ловит
+  регрессию. В тесте оставлен хелпер, комментарий теперь объясняет, зачем
+  именно цикл/хелпер (иначе Rector откатит `push()`).
+- **`MetricsShape`** (`@phpstan-type` в `JsonFormatter`): форма метрик точная;
+  PHPStan level 10 ловит, например, `id` без `(string)`-каста. Старый словарный
+  тип это пропускал.
+- **`LoggerIntegrationTest`**: доступ к `Scope::$globalEventProcessors` идёт через
+  `globalEventProcessors()`, который при исчезновении поля валит тест с явным
+  сообщением вместо `ReflectionException`.

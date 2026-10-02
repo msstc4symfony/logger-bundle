@@ -8,6 +8,11 @@ use Override;
 use stdClass;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
+/**
+ * Well-known context keys lifted into the top-level "metrics" object.
+ *
+ * @phpstan-type MetricsShape array{count?: int|float, size?: int|float, duration?: int|float, id?: string, status?: string}
+ */
 final class JsonFormatter extends BaseJsonFormatter
 {
     private const string DEFAULT_APPLICATION = 'unknown';
@@ -65,7 +70,7 @@ final class JsonFormatter extends BaseJsonFormatter
     /**
      * @param array<mixed> $context
      *
-     * @return array{array<'count'|'size'|'duration'|'id'|'status', int|float|string>|stdClass, array<mixed>}
+     * @return array{MetricsShape|stdClass, array<mixed>}
      */
     private function collectMetrics(array $context): array
     {

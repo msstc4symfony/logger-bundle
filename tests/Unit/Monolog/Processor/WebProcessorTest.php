@@ -39,7 +39,8 @@ final class WebProcessorTest extends TestCase
         ];
     }
 
-    // The RequestStack constructor ignores its argument before Symfony 7.2 (prefer-lowest runs 6.4), so push.
+    // new RequestStack([$r]) needs Symfony 7.2+ (prefer-lowest runs 6.4). Keep push() in this loop: Rector's
+    // PushRequestToRequestStackConstructorRector rewrites an inline new+push back into the 7.2-only constructor.
     private static function requestStackWith(Request ...$requests): RequestStack
     {
         $requestStack = new RequestStack();

@@ -20,7 +20,7 @@ formatters, exception filtering, and Sentry integration.
 
 - PHP 8.4 or higher
 - Symfony 6.4 LTS, 7.x, or 8.x
-- Monolog 3.0 or higher
+- Monolog 3.x
 - `sentry/sentry` 4.x, only for the optional Sentry integration
 
 ## Installation
