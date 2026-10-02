@@ -43,10 +43,7 @@ final class JsonFormatter extends BaseJsonFormatter
             $normalized['extra'] = [];
         }
 
-        [$normalized['metrics'], $normalized['context'], $normalized['extra']] = $this->collectMetrics(
-            $normalized['context'],
-            $normalized['extra'],
-        );
+        [$normalized['metrics'], $normalized['context']] = $this->collectMetrics($normalized['context']);
 
         if ($normalized['context'] === []) {
             $normalized['context'] = new stdClass();
@@ -66,12 +63,11 @@ final class JsonFormatter extends BaseJsonFormatter
     }
 
     /**
-     * @param array<string, mixed> $context
-     * @param array<string, mixed> $extra
+     * @param array<mixed> $context
      *
-     * @return array{array<string, mixed>|stdClass, array<string, mixed>, array<string, mixed>}
+     * @return array{array<'count'|'size'|'duration'|'id'|'status', int|float|string>|stdClass, array<mixed>}
      */
-    private function collectMetrics(array $context, array $extra): array
+    private function collectMetrics(array $context): array
     {
         $metrics = [];
 
@@ -89,6 +85,6 @@ final class JsonFormatter extends BaseJsonFormatter
             }
         }
 
-        return [$metrics !== [] ? $metrics : new stdClass(), $context, $extra];
+        return [$metrics !== [] ? $metrics : new stdClass(), $context];
     }
 }
