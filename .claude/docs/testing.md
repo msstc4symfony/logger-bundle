@@ -54,9 +54,10 @@ SDK (`ClientBuilder` без DSN → null-транспорт). `Scope::addGlobalE
 ## `RequestStack` в тестах — через `push()`
 
 `new RequestStack([$request])` работает только с Symfony 7.2; на 6.4 аргумент
-игнорируется и стек пуст (ячейка prefer-lowest это поймала). В тестах —
-`new RequestStack()` + `push()`, причём **внутри цикла/хелпера**
-(`WebProcessorTest::requestStackWith()`, причина — комментарием в тесте): Rector-правило
-`PushRequestToRequestStackConstructorRector` из общего `rector.php` молча
-переписывает соседние `new RequestStack(); $s->push($r);` обратно в
-`new RequestStack([$r])` при `make fix`.
+игнорируется и стек пуст (ячейка prefer-lowest это поймала). В тестах — обычные
+`new RequestStack()` + `push()`. До bundle-standard v1.8.1 Rector-правило
+`PushRequestToRequestStackConstructorRector` переписывало их в 7.2-only
+конструктор (http-foundation — транзитивная зависимость, Rector брал версию 8.x
+из vendor/), поэтому был хелпер с циклом. С v1.8.1 шаблон `rector.php` прижимает
+все lockstep `symfony/*` к 6.4.0, правило неактивно, хелпер удалён.
+Проверка: `vendor/bin/rector composer-based | grep PushRequest` → `no`.

@@ -116,9 +116,9 @@ RR сам режет вывод воркера. Исправлено аргум�
    security advisory (PKSA-z3gr-8qht-p93v). Минимум — `>=11.5.50` в обоих
    манифестах.
 3. **`RequestStack([$request])`** в `WebProcessorTest` — конструктор с
-   запросами появился в Symfony 7.2; на 6.4 стек пустой. Тест переведён на
-   `push()` в хелпере — прямой `push()` рядом с `new` Rector откатывает
-   (см. [`testing.md`](testing.md)).
+   запросами появился в Symfony 7.2; на 6.4 стек пустой. Тест использует
+   `new RequestStack()` + `push()`; с bundle-standard v1.8.1 Rector больше не
+   откатывает это в конструктор (см. [`testing.md`](testing.md)).
 4. **`symfony/error-handler` < 6.4.44 (и 7.0–7.4.16)** оставляет
    зарегистрированный exception handler, когда ошибками уже управляет кто-то
    другой (PHPUnit) — `FrameworkBundle::boot()` → `ErrorHandler::register()`;
@@ -144,7 +144,9 @@ RR сам режет вывод воркера. Исправлено аргум�
 
 ## Ревью v1.2.0 (исправления в v1.2.1, 2026-10-02 UTC) — что отклонено и почему
 
-- **Minor 2 — `PushRequestToRequestStackConstructorRector` в `withSkip()`**: не
+- **Minor 2 — `PushRequestToRequestStackConstructorRector` в `withSkip()`**
+  (закрыто в bundle-standard v1.8.1: Symfony-правила Rector привязаны к 6.4,
+  хелпер в тесте удалён). Исходное решение: не
   сделано локально. `rector.php` проверяется `bundle-standard` как `ExactFileRule`
   (байт-в-байт с `templates/rector.php`), локальная правка уронит шаг
   verify-standard. Вынесено в follow-up для `bundle-standard`. Риск для `src/`
