@@ -28,8 +28,7 @@ final class WebProcessorTest extends TestCase
      */
     public static function getDataForInvoke(): array
     {
-        // The RequestStack constructor ignores its argument before Symfony 7.2, so push explicitly.
-        $requestStack = new RequestStack([Request::create('https://example.com')]);
+        $requestStack = self::requestStackWith(Request::create('https://example.com'));
 
         return [
             'simple' => [
@@ -38,5 +37,16 @@ final class WebProcessorTest extends TestCase
                 'expected' => new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message', extra: ['url' => 'https://example.com/', 'ip' => '127.0.0.1', 'http_method' => 'GET']),
             ],
         ];
+    }
+
+    // The RequestStack constructor ignores its argument before Symfony 7.2 (prefer-lowest runs 6.4), so push.
+    private static function requestStackWith(Request ...$requests): RequestStack
+    {
+        $requestStack = new RequestStack();
+        foreach ($requests as $request) {
+            $requestStack->push($request);
+        }
+
+        return $requestStack;
     }
 }

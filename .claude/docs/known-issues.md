@@ -117,7 +117,8 @@ RR сам режет вывод воркера. Исправлено аргум�
    манифестах.
 3. **`RequestStack([$request])`** в `WebProcessorTest` — конструктор с
    запросами появился в Symfony 7.2; на 6.4 стек пустой. Тест переведён на
-   `push()`.
+   `push()` в хелпере — прямой `push()` рядом с `new` Rector откатывает
+   (см. [`testing.md`](testing.md)).
 4. **`symfony/error-handler` < 6.4.44 (и 7.0–7.4.16)** оставляет
    зарегистрированный exception handler, когда ошибками уже управляет кто-то
    другой (PHPUnit) — `FrameworkBundle::boot()` → `ErrorHandler::register()`;

@@ -55,4 +55,8 @@ SDK (`ClientBuilder` без DSN → null-транспорт). `Scope::addGlobalE
 
 `new RequestStack([$request])` работает только с Symfony 7.2; на 6.4 аргумент
 игнорируется и стек пуст (ячейка prefer-lowest это поймала). В тестах —
-`new RequestStack()` + `push()`.
+`new RequestStack()` + `push()`, причём **внутри цикла/хелпера**
+(`WebProcessorTest::requestStackWith()`): Rector-правило
+`PushRequestToRequestStackConstructorRector` из общего `rector.php` молча
+переписывает соседние `new RequestStack(); $s->push($r);` обратно в
+`new RequestStack([$r])` при `make fix`.
