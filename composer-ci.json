@@ -1,0 +1,72 @@
+{
+  "name": "msstc4symfony/logger-bundle",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Maxim Shamaev",
+      "email": "maxim.shamaev@gmail.com"
+    }
+  ],
+  "type": "symfony-bundle",
+  "description": "Monolog extension (CI manifest with full optional dependencies)",
+  "minimum-stability": "stable",
+  "keywords": [
+    "php",
+    "symfony",
+    "monolog"
+  ],
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Msstc4Symfony\\LoggerBundle\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Msstc4Symfony\\LoggerBundle\\Test\\": "tests/"
+    }
+  },
+  "require": {
+    "php": ">=8.4",
+    "ext-json": "*",
+    "composer-runtime-api": ">=2.2",
+    "monolog/monolog": "^3.5",
+    "symfony/framework-bundle": "^7.4|^8.0",
+    "symfony/security-bundle": "^7.4|^8.0",
+    "symfony/monolog-bundle": "^3.11|^4.0"
+  },
+  "require-dev": {
+    "deptrac/deptrac": "^4.6",
+    "friendsofphp/php-cs-fixer": "^3.55",
+    "infection/infection": "^0.32",
+    "phpstan/extension-installer": "^1.4",
+    "phpstan/phpstan": "^2.1",
+    "phpstan/phpstan-beberlei-assert": "^2.0",
+    "phpstan/phpstan-strict-rules": "^2.0",
+    "phpstan/phpstan-symfony": "^2.0",
+    "phpunit/phpunit": ">=11.5.50",
+    "rector/rector": "^2.1",
+    "roave/backward-compatibility-check": "^8.20",
+    "roave/security-advisories": "dev-latest",
+    "sentry/sentry": "^4.0",
+    "spaze/phpstan-disallowed-calls": "^v4.0"
+  },
+  "config": {
+    "allow-plugins": {
+      "composer/package-versions-deprecated": true,
+      "infection/extension-installer": true,
+      "phpstan/extension-installer": true
+    },
+    "sort-packages": true
+  },
+  "conflict": {
+    "symfony/error-handler": "<7.4.17 || >=8.0,<8.1.5",
+    "symfony/symfony": "*"
+  },
+  "extra": {
+    "symfony": {
+      "allow-contrib": false,
+      "require": "^7.4|^8.0"
+    }
+  }
+}

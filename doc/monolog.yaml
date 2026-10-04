@@ -1,0 +1,47 @@
+monolog:
+    channels:
+        - deprecation
+
+when@prod:
+    monolog:
+        handlers:
+            main:
+                type: stream
+                path: php://stdout
+                level: info
+                channels: [ "!doctrine", "!event", "!deprecation" ]
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+            errors:
+                type: stream
+                path: php://stdout
+                level: notice
+                channels: [ "doctrine", "event" ]
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+            console:
+                type: console
+                process_psr_3_messages: false
+                level: notice
+                channels: [ "!deprecation" ]
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+
+when@dev:
+    monolog:
+        handlers:
+            main:
+                type: stream
+                path: php://stdout
+                level: debug
+                channels: [ "!doctrine", "!event", "!deprecation" ]
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+            errors:
+                type: stream
+                path: php://stdout
+                level: info
+                channels: [ "doctrine", "event" ]
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+            console:
+                type: console
+                process_psr_3_messages: false
+                level: debug
+                channels: [ "!event", "!doctrine", "!console", "!deprecation" ]
+                formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
