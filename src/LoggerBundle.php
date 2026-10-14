@@ -20,7 +20,7 @@ use Throwable;
 
 final class LoggerBundle extends AbstractBundle
 {
-    private const array DEFAULT_EXCEPTION_CLASSES = [
+    private const DEFAULT_EXCEPTION_CLASSES = [
         NotFoundHttpException::class,
         BadRequestHttpException::class,
         AccessDeniedHttpException::class,

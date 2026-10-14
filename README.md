@@ -18,8 +18,8 @@ formatters, exception filtering, and Sentry integration.
 
 ## Requirements
 
-- PHP 8.4 or higher
-- Symfony 7.4 or 8.x
+- PHP 8.2 or higher (bundle 1.0 needs PHP 8.4)
+- Symfony 7.4 or 8.x (Symfony 8 needs PHP 8.4)
 - Monolog 3.x
 - `sentry/sentry` 4.x, only for the optional Sentry integration
 

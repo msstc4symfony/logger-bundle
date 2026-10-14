@@ -23,7 +23,7 @@ use Throwable;
 #[CoversNothing]
 final class KernelLoggingTest extends TestCase
 {
-    private const int MAX_HANDLER_UNWIND = 5;
+    private const MAX_HANDLER_UNWIND = 5;
 
     private TestKernel $kernel;
 
@@ -35,7 +35,7 @@ final class KernelLoggingTest extends TestCase
         $this->exceptionHandler = $this->currentExceptionHandler();
         putenv('APPLICATION_NAME');
         putenv('COMPONENT_NAME');
-        new Filesystem()->remove(TestKernel::cacheRoot());
+        (new Filesystem())->remove(TestKernel::cacheRoot());
         $this->kernel = new TestKernel('test', false);
         $this->kernel->boot();
     }
@@ -43,7 +43,7 @@ final class KernelLoggingTest extends TestCase
     protected function tearDown(): void
     {
         $this->kernel->shutdown();
-        new Filesystem()->remove(TestKernel::cacheRoot());
+        (new Filesystem())->remove(TestKernel::cacheRoot());
         // The lowest Symfony 7.4 leaves the exception handler FrameworkBundle::boot() pushes on top of
         // PHPUnit's; failOnRisky turns that into a failure on the lowest dependencies.
         for ($i = 0; $i < self::MAX_HANDLER_UNWIND && $this->currentExceptionHandler() !== $this->exceptionHandler; $i++) {

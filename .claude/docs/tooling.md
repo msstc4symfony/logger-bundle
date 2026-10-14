@@ -26,6 +26,8 @@ PHPSTAN_CONFIG=phpstan-ci.neon make check
 make test
 ```
 
+`composer-ci.lock` собран на PHP 8.4 (Symfony 8); на PHP 8.2/8.3 вместо `install` — `composer update`.
+
 ## Два манифеста
 
 - `composer.json` — публикуемый на Packagist. `require-dev` включает

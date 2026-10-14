@@ -8,11 +8,12 @@ under `.claude/docs/`; this file stays lean.
 Symfony bundle (`msstc4symfony/logger-bundle`, namespace `Msstc4Symfony\LoggerBundle`)
 that extends Monolog with context-aware processors, formatters, an
 exception-filtering decorator, and an opt-in Sentry integration. Requires
-PHP >= 8.4, Monolog 3 and Symfony 7.4 / 8.x. Library code only — no host
+PHP >= 8.2, Monolog 3 and Symfony 7.4 / 8.x. Library code only — no host
 application in the repo.
 
-PHP 8.4 is mandatory: the bundle uses native `array_any()`, first-class
-callable syntax, and `#[Override]` throughout. Do not propose backports.
+PHP 8.2 is the floor (since 1.1.0): no typed class constants, no anonymous `new readonly class {}`,
+no `new X()->m()`; `array_any()` comes from `symfony/polyfill-php84`. First-class
+callable syntax and `#[Override]` are used throughout.
 Unlike `healthcheck-bundle`, it does not use asymmetric visibility or
 property hooks — see `.claude/docs/conventions.md` before copying those
 idioms over by analogy.
@@ -80,7 +81,7 @@ Read these when the task touches the area:
 - [`.claude/docs/architecture.md`](.claude/docs/architecture.md) — the
   three wiring points, exception-filtering flow, formatter pair,
   context-aware exceptions, Sentry integration.
-- [`.claude/docs/conventions.md`](.claude/docs/conventions.md) — PHP 8.4
+- [`.claude/docs/conventions.md`](.claude/docs/conventions.md) — PHP 8.2
   idioms, naming, comment policy, baseline-growth ban.
 - [`.claude/docs/testing.md`](.claude/docs/testing.md) — `unit` and
   `integration` suites, the `TestKernel` harness, `RecordingLogger` fixture,

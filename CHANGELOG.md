@@ -4,6 +4,16 @@ All notable changes to this bundle are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow
 [Semantic Versioning](https://semver.org/); dates are UTC.
 
+## [1.1.0] - 2026-10-14
+
+### Changed
+
+- Requires PHP 8.2 instead of 8.4 (Symfony 8 still needs PHP 8.4).
+
+### Added
+
+- `symfony/polyfill-php84` dependency (`array_any` on PHP 8.2/8.3).
+
 ## [1.0.0] - 2026-10-04
 
 First release of `msstc4symfony/logger-bundle` (namespace `Msstc4Symfony\LoggerBundle`).
@@ -29,4 +39,5 @@ First release of `msstc4symfony/logger-bundle` (namespace `Msstc4Symfony\LoggerB
 - PHP >= 8.4, Symfony ^7.4|^8.0, Monolog ^3.5, `symfony/monolog-bundle` ^3.11|^4.0.
 - `sentry/sentry` 4.x only for the optional Sentry integration.
 
+[1.1.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v1.1.0
 [1.0.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v1.0.0

@@ -1,14 +1,13 @@
 # Конвенции
 
-## Идиомы PHP 8.4
+## Идиомы PHP
 
-Бандл требует PHP >= 8.4, бэкпорты не предлагать.
+Бандл требует PHP >= 8.2 (с 1.1.0): синтаксис только 8.2, функции 8.4 — через `symfony/polyfill-php84`.
 
 - **`#[Override]`** — на каждом методе, переопределяющем родителя/интерфейс
   (все процессоры, форматтеры, `ExceptionFilterDecorator`,
   `LoggerBundle`, `AddExceptionFilterPass`).
-- **Типизированные константы класса**: `private const string DEFAULT_APPLICATION`
-  в `JsonFormatter`.
+- **Константы без нативного типа** (PHP 8.2): `private const DEFAULT_APPLICATION` в `JsonFormatter`.
 - **`readonly`** на промотированных свойствах конструктора там, где состояние
   не меняется после создания (`UserProcessor`, `WebProcessor`,
   `SwitchFormatter`, `ExceptionFilterDecorator`). `EnvironmentProcessor`
@@ -16,7 +15,7 @@
   свойство: оно объявлено отдельно и вычисляется в теле конструктора из
   необязательных параметров `$podName`/`$podUid`, которые сами по себе не
   промотированы.
-- **Нативная `array_any()`** (PHP 8.4) в `ExceptionFilterDecorator::mustSkip()`
+- **`array_any()`** (PHP 8.4, полифилл на 8.2/8.3) в `ExceptionFilterDecorator::mustSkip()`
   вместо `array_filter`/`in_array`-обвязки.
 - **First-class callable синтаксис**: `array_filter($_SERVER['argv'], is_string(...))`
   в `ConsoleProcessor`.

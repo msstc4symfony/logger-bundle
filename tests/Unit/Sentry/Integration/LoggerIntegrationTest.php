@@ -36,7 +36,7 @@ final class LoggerIntegrationTest extends TestCase
 
         $integration->setupOnce();
         $event = Event::createEvent();
-        $processed = new Scope()->applyToEvent($event);
+        $processed = (new Scope())->applyToEvent($event);
 
         self::assertSame($event, $processed);
         self::assertSame(['application' => 'billing', 'component' => 'worker'], $event->getTags());
@@ -44,7 +44,7 @@ final class LoggerIntegrationTest extends TestCase
 
     public function testSetupOnceRegistersExactlyOneGlobalEventProcessor(): void
     {
-        new LoggerIntegration('billing', 'worker')->setupOnce();
+        (new LoggerIntegration('billing', 'worker'))->setupOnce();
 
         $processors = $this->globalEventProcessors()->getValue();
         self::assertIsArray($processors);
@@ -55,9 +55,9 @@ final class LoggerIntegrationTest extends TestCase
     {
         $this->bindHubWith(new LoggerIntegration('current-app', 'current-component'));
 
-        new LoggerIntegration('stale-app', 'stale-component')->setupOnce();
+        (new LoggerIntegration('stale-app', 'stale-component'))->setupOnce();
         $event = Event::createEvent();
-        $processed = new Scope()->applyToEvent($event);
+        $processed = (new Scope())->applyToEvent($event);
 
         self::assertSame($event, $processed);
         self::assertSame(['application' => 'current-app', 'component' => 'current-component'], $event->getTags());
@@ -67,9 +67,9 @@ final class LoggerIntegrationTest extends TestCase
     {
         SentrySdk::setCurrentHub(new Hub(ClientBuilder::create(['default_integrations' => false])->getClient()));
 
-        new LoggerIntegration('billing', 'worker')->setupOnce();
+        (new LoggerIntegration('billing', 'worker'))->setupOnce();
         $event = Event::createEvent();
-        $processed = new Scope()->applyToEvent($event);
+        $processed = (new Scope())->applyToEvent($event);
 
         self::assertSame($event, $processed);
         self::assertSame([], $event->getTags());
@@ -79,9 +79,9 @@ final class LoggerIntegrationTest extends TestCase
     {
         SentrySdk::setCurrentHub(new Hub());
 
-        new LoggerIntegration('billing', 'worker')->setupOnce();
+        (new LoggerIntegration('billing', 'worker'))->setupOnce();
         $event = Event::createEvent();
-        $processed = new Scope()->applyToEvent($event);
+        $processed = (new Scope())->applyToEvent($event);
 
         self::assertSame($event, $processed);
         self::assertSame([], $event->getTags());

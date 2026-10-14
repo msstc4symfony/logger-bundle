@@ -17,14 +17,14 @@ final class JsonFormatterTest extends TestCase
     {
         $record = new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message');
 
-        self::assertStringEndsWith("}\n", new JsonFormatter()->format($record));
+        self::assertStringEndsWith("}\n", (new JsonFormatter())->format($record));
     }
 
     public function testFormatCanOmitTrailingNewline(): void
     {
         $record = new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message');
 
-        self::assertStringEndsNotWith("\n", new JsonFormatter(appendNewline: false)->format($record));
+        self::assertStringEndsNotWith("\n", (new JsonFormatter(appendNewline: false))->format($record));
     }
 
     #[DataProvider('getDataForFormat')]

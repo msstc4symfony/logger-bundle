@@ -8,7 +8,7 @@ workflow (`on: workflow_call`), подключённый в `checks.yml` так:
 ```yaml
 jobs:
   standard:
-    uses: msstc4symfony/bundle-standard/.github/workflows/php-bundle.yml@v1.0.0
+    uses: msstc4symfony/bundle-standard/.github/workflows/php-bundle.yml@v2.0.1
     with:
       slug: msstc4symfony/logger-bundle
       extensions: 'mbstring, xml, ctype, iconv, intl, json'
@@ -23,8 +23,8 @@ jobs:
 | Вход | Дефолт | Назначение |
 |---|---|---|
 | `slug` | — (обязателен) | `owner/repo` для загрузки в Codecov |
-| `php-versions` | `["8.4","8.5"]` | матрица PHP для PHPUnit |
-| `symfony-versions` | 7.4 / 8.x, coverage на 8.x | матрица Symfony, объект `{version,label,codecov}` |
+| `php-versions` | `["8.2","8.3","8.4","8.5"]` | матрица PHP для PHPUnit (с v2.0.0 стандарта) |
+| `symfony-versions` | 7.4 (PHP 8.2+) / 8.x (PHP 8.4+), coverage на 8.x | матрица Symfony, объект `{version,label,codecov,php?}` |
 | `extensions` | `mbstring, xml, ctype, iconv, intl` | PHP-расширения для тестов |
 | `run-deptrac` | `true` | джоба DEPTRAC |
 | `run-infection` | `true` | mutation testing (только push в `main`), блокирующий |
@@ -60,7 +60,7 @@ Codecov выключен (`run-codecov` по умолчанию `false`): в о�
 - Измеренный MSI (= covered MSI, покрытие мутантов 100 %) на 2026-10-02 UTC —
   82.2–82.5 %. Пороги `78`/`78` — «измеренное минус ~4». Если MSI заметно
   вырос, поднимать пороги, а не ждать дефолта стандарта.
-- Ячейка prefer-lowest реально зелёная (не отключена): PHP 8.4, Symfony 7.4,
+- Ячейка prefer-lowest реально зелёная (не отключена): PHP 8.2 (до 1.1.0 — 8.4), Symfony 7.4,
   `composer update --prefer-lowest --prefer-stable` по `composer-ci.json`.
   Что для этого пришлось поднять (Monolog 3, PHPUnit >= 11.5.50) — в [`known-issues.md`](known-issues.md), раздел «prefer-lowest».
 - Шаг «Pin Symfony version» в стандарте переписывает констрейнт каждого

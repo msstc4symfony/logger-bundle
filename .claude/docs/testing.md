@@ -54,3 +54,6 @@ SDK (`ClientBuilder` без DSN → null-транспорт). `Scope::addGlobalE
 Без сброса тесты зависят от порядка запуска.
 
 `KernelLoggingTest::tearDown()` разворачивает exception handler'ы, оставленные ядром (lowest Symfony 7.4), — см. [`known-issues.md`](known-issues.md).
+
+`array_any()` в `ExceptionFilterDecorator` на PHP 8.4+ нативная; путь через `symfony/polyfill-php84` проверяют
+только ячейки PHPUnit на 8.2/8.3 (матрица стандарта) или локальный прогон в Docker `php:8.2-cli`.

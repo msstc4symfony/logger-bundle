@@ -15,9 +15,9 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
  */
 final class JsonFormatter extends BaseJsonFormatter
 {
-    private const string DEFAULT_APPLICATION = 'unknown';
+    private const DEFAULT_APPLICATION = 'unknown';
 
-    private const string DEFAULT_COMPONENT = 'unknown';
+    private const DEFAULT_COMPONENT = 'unknown';
 
     public function __construct(
         int $batchMode = BaseJsonFormatter::BATCH_MODE_JSON,

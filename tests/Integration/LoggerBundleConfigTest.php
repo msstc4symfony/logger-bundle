@@ -26,7 +26,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 #[CoversNothing]
 final class LoggerBundleConfigTest extends TestCase
 {
-    private const array DEFAULT_EXCEPTION_CLASSES = [
+    private const DEFAULT_EXCEPTION_CLASSES = [
         NotFoundHttpException::class,
         BadRequestHttpException::class,
         AccessDeniedHttpException::class,
@@ -36,7 +36,7 @@ final class LoggerBundleConfigTest extends TestCase
 
     public function testAliasIsMsstc4symfonyLogger(): void
     {
-        self::assertSame('msstc4symfony_logger', new LoggerBundle()->getContainerExtension()?->getAlias());
+        self::assertSame('msstc4symfony_logger', (new LoggerBundle())->getContainerExtension()?->getAlias());
     }
 
     public function testDefaultsApplyWithoutAnyConfiguration(): void
@@ -117,7 +117,7 @@ final class LoggerBundleConfigTest extends TestCase
         $this->expectException(LogicException::class);
         $this->expectExceptionMessage('application_name');
 
-        new LoggerBundle()->loadExtension(['component_name' => 'x', 'exception_classes' => []], $configurator, $builder);
+        (new LoggerBundle())->loadExtension(['component_name' => 'x', 'exception_classes' => []], $configurator, $builder);
     }
 
     /**
@@ -130,7 +130,7 @@ final class LoggerBundleConfigTest extends TestCase
         $container->setParameter('kernel.environment', 'test');
         $container->setParameter('kernel.build_dir', sys_get_temp_dir());
 
-        $extension = new LoggerBundle()->getContainerExtension();
+        $extension = (new LoggerBundle())->getContainerExtension();
         self::assertNotNull($extension);
         $extension->load([$config], $container);
 
