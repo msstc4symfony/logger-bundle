@@ -6,13 +6,13 @@ All notable changes to this bundle are documented here. The format follows
 
 ## [1.1.0] - 2026-10-14
 
-### Changed
-
-- Requires PHP 8.2 instead of 8.4 (Symfony 8 still needs PHP 8.4).
-
 ### Added
 
 - `symfony/polyfill-php84` dependency (`array_any` on PHP 8.2/8.3).
+
+### Changed
+
+- Requires PHP 8.2 instead of 8.4 (Symfony 8 still needs PHP 8.4).
 
 ## [1.0.0] - 2026-10-04
 

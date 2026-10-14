@@ -10,7 +10,7 @@ You are reviewing code in `msstc4symfony/logger-bundle` — a published Symfony 
 
 Read these to anchor your review; do not assume:
 
-- `composer.json` — supported PHP/Symfony range (currently PHP `>=8.4`, Symfony `^7.4|^8.0`). Any code that breaks the lowest supported version is a bug.
+- `composer.json` — supported PHP/Symfony range (currently PHP `>=8.2`, Symfony `^7.4|^8.0`). Any code that breaks the lowest supported version is a bug: no typed class constants, anonymous `readonly class`, `new X()->m()`, property hooks or asymmetric visibility; PHP 8.3/8.4 functions (`array_any`, `json_validate`, …) only with the matching `symfony/polyfill-php8x` in `require`.
 - `CLAUDE.md` — architectural invariants (three-place wiring, decorator-not-handler naming, debug-passthrough asymmetry, opt-in Sentry).
 - `phpstan.dist.neon`, `.php-cs-fixer.dist.php`, `rector.php` — the *intended* rules. If a finding would be auto-fixed by `make fix` or auto-flagged by `make check`, mention it briefly and move on — don't pad the review with lint noise.
 
