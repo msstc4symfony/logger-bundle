@@ -48,7 +48,7 @@ PHPUnit risky/deprecation warnings, PHPStan ignored errors, anything noted in `p
 ### 5. Next step
 One sentence. Examples:
 - "Run `make fix` to auto-resolve the 12 style/refactor findings, then re-run this skill."
-- "Fix the PHPStan error in `src/Monolog/Formatter/JsonFormatter.php:73` (it can't be auto-fixed) before opening a PR."
+- "Fix the PHPStan error in `src/Framework/Monolog/Formatter/JsonFormatter.php:73` (it can't be auto-fixed) before opening a PR."
 - "All clear — ready to commit."
 
 ## Rules

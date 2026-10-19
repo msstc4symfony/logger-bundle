@@ -1,6 +1,6 @@
 ---
 name: new-processor
-description: Scaffold a new Monolog processor in this bundle — creates the class in src/Monolog/Processor/, registers it in services.php with the monolog.processor tag, and adds a matching unit test. Use when the user asks to "add a processor", "create a Monolog processor", "добавь процессор", or similar. Do NOT use for formatters, handlers, or decorators (different wiring rules).
+description: Scaffold a new Monolog processor in this bundle — creates the class in src/Framework/Monolog/Processor/, registers it in services.php with the monolog.processor tag, and adds a matching unit test. Use when the user asks to "add a processor", "create a Monolog processor", "добавь процессор", or similar. Do NOT use for formatters, handlers, or decorators (different wiring rules).
 ---
 
 # Scaffold a Monolog processor
@@ -17,20 +17,24 @@ If any of these is unclear, ask one short clarifying question before scaffolding
 
 ## Files to create
 
-### 1. `src/Monolog/Processor/<Name>Processor.php`
+### 1. `src/Framework/Monolog/Processor/<Name>Processor.php`
 
-Match the existing style — see `src/Monolog/Processor/WebProcessor.php` as the canonical template. Required shape:
+Match the existing style — see `src/Framework/Monolog/Processor/WebProcessor.php` as the canonical template. Required shape:
 
 ```php
 <?php
 
 declare(strict_types=1);
 
-namespace Msstc4Symfony\LoggerBundle\Monolog\Processor;
+namespace Msstc4Symfony\LoggerBundle\Framework\Monolog\Processor;
 
 use Monolog\LogRecord;
 use Monolog\Processor\ProcessorInterface;
+use Override;
 
+/**
+ * @internal
+ */
 final class <Name>Processor implements ProcessorInterface
 {
     public function __construct(
@@ -38,6 +42,7 @@ final class <Name>Processor implements ProcessorInterface
     ) {
     }
 
+    #[Override]
     public function __invoke(LogRecord $record): LogRecord
     {
         // guard clauses that return $record unchanged when the data is unavailable
@@ -61,9 +66,9 @@ Rules:
 
 There is no resource scan, so the processor must be registered explicitly. Add the class to the processor list in `services.php` (keep it alphabetically sorted); the loop applies `->tag('monolog.processor')`.
 
-### 3. `tests/Unit/Monolog/Processor/<Name>ProcessorTest.php`
+### 3. `tests/Unit/Framework/Monolog/Processor/<Name>ProcessorTest.php`
 
-Match the existing test style. Look at `tests/Unit/Monolog/Processor/WebProcessorTest.php` (HTTP-context processor with `RequestStack`) or `EnvironmentProcessorTest.php` (no Symfony deps) — pick the closer template. Required coverage:
+Match the existing test style. Look at `tests/Unit/Framework/Monolog/Processor/WebProcessorTest.php` (HTTP-context processor with `RequestStack`) or `EnvironmentProcessorTest.php` (no Symfony deps) — pick the closer template. Required coverage:
 
 - One test that the processor adds the expected keys with the expected types when its data source is available.
 - One test that the processor returns the record unchanged (no keys added) when the data source is absent — exercise every guard clause.

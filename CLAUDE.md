@@ -35,7 +35,7 @@ All in `Makefile` (the standard's 7-target layout):
 - `make help` — list targets (default goal).
 
 Single test: `vendor/bin/phpunit --filter <TestName>` or
-`vendor/bin/phpunit tests/Unit/Monolog/Formatter/JsonFormatterTest.php`.
+`vendor/bin/phpunit tests/Unit/Framework/Monolog/Formatter/JsonFormatterTest.php`.
 
 PHPUnit config is strict (`failOnRisky`, `failOnWarning`,
 `failOnPhpunitDeprecation`, `beStrictAboutOutputDuringTests`) — silence
@@ -59,7 +59,7 @@ The bundle's wiring lives in three places that must stay in sync:
 2. **`src/Resources/config/services.php`** registers every service
    explicitly (no resource scan). New processors must be added there with the
    `monolog.processor` tag; the decorator is created by the compiler pass.
-3. **`src/DependencyInjection/Compiler/AddExceptionFilterPass.php`** walks
+3. **`src/DependencyInjection/CompilerPass/AddExceptionFilterPass.php`** walks
    every service whose id starts with `monolog.logger`, skips abstracts and
    existing decorators, and wraps each with `ExceptionFilterDecorator`. This
    is how exception filtering applies to *every* channel without per-channel
@@ -70,7 +70,7 @@ matches `msstc4symfony_logger.exception_classes` — except `debug()`, which alw
 passes through. `SwitchFormatter` / `JsonFormatter` are the two formatters;
 `ExceptionContextProcessor` merges context from exceptions implementing
 `ContextAwareExceptionInterface`. The Sentry integration
-(`Sentry\Integration\LoggerIntegration`) is opt-in — not autoconfigured, a
+(`Framework\Sentry\Integration\LoggerIntegration`) is opt-in — not autoconfigured, a
 consumer must add it to `sentry.options.integrations`. Full detail in
 [`.claude/docs/architecture.md`](.claude/docs/architecture.md).
 
@@ -89,7 +89,7 @@ Read these when the task touches the area:
 - [`.claude/docs/tooling.md`](.claude/docs/tooling.md) — `make check`
   breakdown, baseline policy, two-manifest setup, deptrac rules.
 - [`.claude/docs/ci.md`](.claude/docs/ci.md) — reusable-workflow model
-  from `bundle-standard@v1.0.0`, prefer-lowest cell, Infection thresholds.
+  from `bundle-standard`, prefer-lowest cell, Infection thresholds.
 - [`.claude/docs/known-issues.md`](.claude/docs/known-issues.md) —
   gotchas and deferred work. **Check this before chasing a "weird"
   failure.**

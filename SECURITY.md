@@ -52,7 +52,7 @@ following components are in scope for security reports:
 - Formatters (`JsonFormatter`, `SwitchFormatter`)
 - `ExceptionFilterDecorator`
 - The compiler pass `AddExceptionFilterPass`
-- The Sentry integration (`Sentry\Integration\LoggerIntegration`)
+- The Sentry integration (`Framework\Sentry\Integration\LoggerIntegration`)
 
 The following are **out of scope** because they are the host application's
 responsibility:

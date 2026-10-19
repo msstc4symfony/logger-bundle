@@ -10,8 +10,9 @@ use Monolog\Handler\TestHandler;
 use Monolog\Level;
 use Monolog\Logger;
 use Monolog\LogRecord;
-use Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\JsonFormatter;
 use Msstc4Symfony\LoggerBundle\Test\Integration\Kernel\TestKernel;
+use Override;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
@@ -30,6 +31,7 @@ final class KernelLoggingTest extends TestCase
     /** @var (callable(Throwable): void)|null */
     private $exceptionHandler;
 
+    #[Override]
     protected function setUp(): void
     {
         $this->exceptionHandler = $this->currentExceptionHandler();
@@ -40,6 +42,7 @@ final class KernelLoggingTest extends TestCase
         $this->kernel->boot();
     }
 
+    #[Override]
     protected function tearDown(): void
     {
         $this->kernel->shutdown();

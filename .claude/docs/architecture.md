@@ -14,14 +14,14 @@
    `LoggerIntegration`, `ExceptionFilterDecorator` через `#[Autowire(param:)]`).
    `build()` добавляет компилятор-пасс `AddExceptionFilterPass`.
 2. **`src/Resources/config/services.php`** — явная регистрация сервисов
-   (`JsonFormatter`, `SwitchFormatter`, `Sentry\Integration\LoggerIntegration` (только если установлен `sentry/sentry`), пять процессоров с тегом
+   (`JsonFormatter`, `SwitchFormatter`, `Framework\Sentry\Integration\LoggerIntegration` (только если установлен `sentry/sentry`), пять процессоров с тегом
    `monolog.processor`: `ConsoleProcessor`, `EnvironmentProcessor`,
    `ExceptionContextProcessor`, `UserProcessor`, `WebProcessor`) с
    `autowire`/`autoconfigure` и биндингами `$batchMode`/`$includeStacktraces`.
    Автосканирования каталога нет: новый процессор или форматтер нужно добавить
    в этот файл. Заодно файл задаёт параметр `msstc4symfony_logger.unknown`,
    на который ссылаются дефолты `%env(default:…)%`.
-3. **`src/DependencyInjection/Compiler/AddExceptionFilterPass.php`** — обходит
+3. **`src/DependencyInjection/CompilerPass/AddExceptionFilterPass.php`** — обходит
    все `ContainerBuilder`-определения, чей id начинается с `monolog.logger`,
    пропускает абстрактные и уже задекорированные сервисы и оборачивает
    остальные в `ExceptionFilterDecorator`. Так фильтрация исключений работает
@@ -29,7 +29,7 @@
 
 ## Поток фильтрации исключений
 
-`ExceptionFilterDecorator` (`src/Monolog/Handler/`) — это декоратор
+`ExceptionFilterDecorator` (`src/Framework/Monolog/Handler/`) — это декоратор
 `Psr\Log\LoggerInterface` (не Monolog-хендлер, несмотря на директорию).
 В `log()` он смотрит на `$context['exception']`: если это инстанс любого
 класса из `msstc4symfony_logger.exception_classes`, вызов молча гасится —
@@ -65,7 +65,7 @@
 
 ## Опциональность Sentry-интеграции
 
-`Sentry\Integration\LoggerIntegration` — **opt-in**: не автоконфигурируется,
+`Framework\Sentry\Integration\LoggerIntegration` — **opt-in**: не автоконфигурируется,
 потребитель сам добавляет её в `sentry.options.integrations`
 (`config/packages/sentry.yaml`). Она добавляет теги `application`/`component`
 в каждое событие Sentry через `Scope::addGlobalEventProcessor()`. Процессор
@@ -79,9 +79,23 @@
 полностью анализируется PHPStan на обоих манифестах (исключение из
 `phpstan.dist.neon` убрано). Причина и история — в
 [`tooling.md`](tooling.md) и [`known-issues.md`](known-issues.md).
-Rector тоже обрабатывает `src/Sentry/` (общий `rector.php` из `bundle-standard`
+Rector тоже обрабатывает `src/Framework/Sentry/` (общий `rector.php` из `bundle-standard`
 без исключений; с 2026-10-01 UTC).
 
 ## Не-final классы
 
 Нет: все конкретные классы бандла `final`; не-final только интерфейс `ContextAwareExceptionInterface` и трейт `ContextAwareExceptionTrait`.
+
+## Раскладка (с 2.0, bundle-standard v3)
+
+| Слой | Каталог | Что | Зависит от |
+|---|---|---|---|
+| Application | `src/Application/Exception/` | `ContextAwareExceptionInterface`/`Trait` — контракт исключений приложения | — |
+| Framework | `src/Framework/Monolog/{Formatter,Handler,Processor}/`, `src/Framework/Sentry/Integration/` | точки расширения, которые вызывает хост-библиотека: formatter'ы, processor'ы, декоратор handler'ов (Monolog), `LoggerIntegration` (Sentry SDK вызывает `setupOnce()`) | Application |
+| DependencyInjection | `src/DependencyInjection/CompilerPass/` | `AddExceptionFilterPass` | Framework |
+| BundleRoot | `src/LoggerBundle.php` | конфиг-дерево, параметры | DependencyInjection |
+
+По спеку этапа B (п. 5, уточнение 2026-10-19 UTC): `LoggerIntegration` — плагин, который вызывает Sentry SDK
+(`sentry.options.integrations`), а не адаптер, который вызывает бандл, поэтому `Framework`. Публичный API — README «Public API»; `@internal`: `JsonFormatter`,
+`ExceptionFilterDecorator`, processor'ы, `AddExceptionFilterPass`. Примеры конфигов в `doc/*.yaml` ссылаются на
+FQCN — при переносе классов править и их.

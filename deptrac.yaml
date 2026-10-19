@@ -1,20 +1,41 @@
+# Canonical layers of the msstc4symfony bundle standard (stage B spec, section 2).
+# Copy as-is; replace the BundleRoot value with ^<bundle class>$ (deptrac reads an unanchored regex: anchors and
+# doubled backslashes, e.g. ^Msstc4Symfony\\FooBundle\\FooBundle$).
+# A bundle may drop dependencies from the ruleset, never add them.
 deptrac:
     paths:
         - ./src
 
-    exclude_files:
-        - '#.*test.*#i'
-
     layers:
-        - name: Monolog
+        - name: Domain
           collectors:
               - type: directory
-                value: src/Monolog/.*
+                value: src/Domain/(Entity|Document|ValueObject|Enum|Event|Repository|DocumentRepository)/.*
 
-        - name: Sentry
+        - name: DomainService
           collectors:
               - type: directory
-                value: src/Sentry/.*
+                value: src/Domain/(Service|Helper|Specification)/.*
+
+        - name: Application
+          collectors:
+              - type: directory
+                value: src/Application/.*
+
+        - name: Infrastructure
+          collectors:
+              - type: directory
+                value: src/Infrastructure/.*
+
+        - name: Presentation
+          collectors:
+              - type: directory
+                value: src/Presentation/.*
+
+        - name: Framework
+          collectors:
+              - type: directory
+                value: src/Framework/.*
 
         - name: DependencyInjection
           collectors:
@@ -24,19 +45,19 @@ deptrac:
         - name: BundleRoot
           collectors:
               - type: classLike
-                value: Msstc4Symfony\\LoggerBundle\\LoggerBundle
+                value: ^Msstc4Symfony\\LoggerBundle\\LoggerBundle$
 
     ruleset:
-        # Monolog processors/formatters/handlers are the core; they depend on nothing in-bundle.
-        Monolog: ~
+        # The contract application exceptions implement to add log context.
+        Application: ~
 
-        # Optional Sentry integration stays self-contained — sentry/sentry is not a hard dependency.
-        Sentry: ~
+        # Monolog formatters, processors, the handler decorator and the Sentry integration.
+        Framework:
+            - Application
 
-        # Wiring consumes the core, never the other way round.
+        # The exception filter pass decorates handlers with ExceptionFilterDecorator.
         DependencyInjection:
-            - Monolog
+            - Framework
 
-        # The bundle entrypoint only composes the DI layer.
         BundleRoot:
             - DependencyInjection

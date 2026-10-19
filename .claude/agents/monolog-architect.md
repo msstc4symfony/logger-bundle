@@ -12,21 +12,21 @@ These three files must stay consistent. A change in one usually requires a chang
 
 1. **`src/LoggerBundle.php`** — an `AbstractBundle` (alias `msstc4symfony_logger`): config tree in `configure()`, container parameters in `loadExtension()`, the `AddExceptionFilterPass` compiler pass in `build()`.
 2. **`src/Resources/config/services.php`** — `defaults()` is `autowire()` + `autoconfigure()` with the `$batchMode` / `$includeStacktraces` binds. There is no resource scan: every service is registered explicitly (`JsonFormatter`, `SwitchFormatter`, the five processors tagged `monolog.processor`).
-3. **`src/DependencyInjection/Compiler/AddExceptionFilterPass.php`** — walks every service whose id starts with `monolog.logger`, skips abstracts, skips already-decorated services, and skips `ExceptionFilterDecorator` itself, then wraps each in `ExceptionFilterDecorator`. This is how filtering applies to all channels without per-channel config.
+3. **`src/DependencyInjection/CompilerPass/AddExceptionFilterPass.php`** — walks every service whose id starts with `monolog.logger`, skips abstracts, skips already-decorated services, and skips `ExceptionFilterDecorator` itself, then wraps each in `ExceptionFilterDecorator`. This is how filtering applies to all channels without per-channel config.
 
 ## Decision rules
 
 **Adding a Monolog processor:**
-- Place class in `src/Monolog/Processor/`, implement `Monolog\Processor\ProcessorInterface`.
+- Place class in `src/Framework/Monolog/Processor/`, implement `Monolog\Processor\ProcessorInterface`.
 - Add an explicit `$services->set(...)->tag('monolog.processor')` entry in `services.php`.
-- Add a unit test in `tests/Unit/Monolog/Processor/` matching the existing test style (direct instantiation with mocked dependencies, no kernel).
+- Add a unit test in `tests/Unit/Framework/Monolog/Processor/` matching the existing test style (direct instantiation with mocked dependencies, no kernel).
 
 **Adding a formatter:**
-- Place in `src/Monolog/Formatter/`. Register it explicitly in `services.php`.
+- Place in `src/Framework/Monolog/Formatter/`. Register it explicitly in `services.php`.
 - If autowiring scalar args, prefer `#[Autowire(param: 'msstc4symfony_logger.xxx')]` (see `JsonFormatter`, `LoggerIntegration`) over `bind:`.
 
 **Adding a handler or PSR-3 decorator:**
-- Place in `src/Monolog/Handler/` (note: the directory is named "Handler" but currently holds `ExceptionFilterDecorator`, a PSR-3 decorator, not a Monolog handler — historical naming, preserve it).
+- Place in `src/Framework/Monolog/Handler/` (note: the directory is named "Handler" but currently holds `ExceptionFilterDecorator`, a PSR-3 decorator, not a Monolog handler — historical naming, preserve it).
 - Register it explicitly in `services.php` (the filter decorator is created by the compiler pass instead).
 - If it should be applied to every logger channel, extend `AddExceptionFilterPass` or write a sibling pass — do not try to do it via tags.
 
@@ -39,7 +39,7 @@ These three files must stay consistent. A change in one usually requires a chang
 - If sourced from an env var, mirror the `'%env(default:msstc4symfony_logger.unknown:ENV_VAR_NAME)%'` default used for `application_name` / `component_name`.
 
 **Sentry code:**
-- Anything that imports `Sentry\*` lives under `src/Sentry/` (its own deptrac layer). PHPStan and Rector analyse it like any other code: `sentry/sentry` is in `require-dev` of both manifests.
+- Anything that imports `Sentry\*` lives under `src/Framework/Sentry/` (deptrac layer `Framework`, bundle-standard v3). PHPStan and Rector analyse it like any other code: `sentry/sentry` is in `require-dev` of both manifests.
 
 ## Workflow
 

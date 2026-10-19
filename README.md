@@ -73,19 +73,19 @@ when@prod:
         path: php://stdout
         level: info
         channels: [ "!doctrine", "!event", "!deprecation" ]
-        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter
       errors:
         type: stream
         path: php://stdout
         level: notice
         channels: [ "doctrine", "event" ]
-        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter
       console:
         type: console
         process_psr_3_messages: false
         level: notice
         channels: [ "!deprecation" ]
-        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter
 
 when@dev:
   monolog:
@@ -95,19 +95,19 @@ when@dev:
         path: php://stdout
         level: debug
         channels: [ "!doctrine", "!event", "!deprecation" ]
-        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter
       errors:
         type: stream
         path: php://stdout
         level: info
         channels: [ "doctrine", "event" ]
-        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter
       console:
         type: console
         process_psr_3_messages: false
         level: debug
         channels: [ "!event", "!doctrine", "!console", "!deprecation" ]
-        formatter: Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter
+        formatter: Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter
 ```
 
 ### Exception Filtering
@@ -135,7 +135,7 @@ If you're using Sentry, add the LoggerIntegration to your Sentry configuration:
 sentry:
   options:
     integrations:
-      - Msstc4Symfony\LoggerBundle\Sentry\Integration\LoggerIntegration
+      - Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration
 ```
 
 This will automatically add `application` and `component` tags to all Sentry events.
@@ -175,8 +175,8 @@ Extracts additional context from exceptions that implement `ContextAwareExceptio
 custom context data to your exceptions:
 
 ```php
-use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface;
-use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionTrait;
+use Msstc4Symfony\LoggerBundle\Application\Exception\ContextAwareExceptionInterface;
+use Msstc4Symfony\LoggerBundle\Application\Exception\ContextAwareExceptionTrait;
 
 class PaymentFailedException extends \RuntimeException implements ContextAwareExceptionInterface
 {
@@ -302,8 +302,8 @@ This produces a structured JSON log:
 Create custom exceptions with additional context:
 
 ```php
-use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface;
-use Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionTrait;
+use Msstc4Symfony\LoggerBundle\Application\Exception\ContextAwareExceptionInterface;
+use Msstc4Symfony\LoggerBundle\Application\Exception\ContextAwareExceptionTrait;
 
 class OrderProcessingException extends \RuntimeException implements ContextAwareExceptionInterface
 {
@@ -358,6 +358,24 @@ msstc4symfony_logger:
     - App\Exception\ExpectedBusinessException
     - App\Exception\ValidationException
 ```
+
+## Public API
+
+Applications use or implement only these; every other class is `@internal` and may change in a minor release.
+
+| Class | Use |
+|---|---|
+| `Msstc4Symfony\LoggerBundle\Application\Exception\ContextAwareExceptionInterface`, `ContextAwareExceptionTrait` | exceptions that add log context |
+| `Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter` | formatter id in `monolog.yaml` |
+| `Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration` | integration id in `sentry.yaml` |
+| `Msstc4Symfony\LoggerBundle\LoggerBundle` | the bundle |
+
+The configuration keys `msstc4symfony_logger.application_name`, `component_name` and `exception_classes` are
+public too.
+
+Upgrading from 1.x: 2.0 moved every class into the canonical layers — see the CHANGELOG for the old → new names
+(`SwitchFormatter` in `monolog.yaml`, `LoggerIntegration` in `sentry.yaml`). Processors, `JsonFormatter` and
+`ExceptionFilterDecorator` are registered by the bundle; refer to their behaviour, not their class names.
 
 ## Development
 

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Msstc4Symfony\LoggerBundle\Test\Integration\Kernel;
 
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\JsonFormatter;
 use Msstc4Symfony\LoggerBundle\LoggerBundle;
-use Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter;
 use Override;
 use Symfony\Bundle\FrameworkBundle\FrameworkBundle;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;

@@ -1,4 +1,7 @@
-# Конвенции
+# Соглашения
+
+- Раскладка и правила семейства — спек этапа B (`docs/superpowers/specs/2026-10-17-stage-b-conventions-design.md`
+  в корне msstc4symfony): канонические слои, `@internal` вне Public API (только в мажорах), `#[\Override]` везде.
 
 ## Идиомы PHP
 
@@ -38,7 +41,7 @@
 Двухстрочный `<?php` + `declare(strict_types=1);` — стандарт проекта.
 Но `.php-cs-fixer.dist.php` явно выключает `linebreak_after_opening_tag` и
 `blank_line_after_opening_tag`, поэтому cs-fixer это не нормализует сам:
-`src/Monolog/Formatter/JsonFormatter.php` и `SwitchFormatter.php` остались
+`src/Framework/Monolog/Formatter/JsonFormatter.php` и `SwitchFormatter.php` остались
 на однострочном `<?php declare(strict_types=1);`. При правке этих файлов не
 нужно "чинить" их формат отдельным PR — это не баг, а нетронутый cs-fixer'ом
 кусок; но новые файлы пиши двухстрочным вариантом.

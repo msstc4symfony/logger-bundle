@@ -3,14 +3,14 @@
 declare(strict_types=1);
 
 use Monolog\Formatter\JsonFormatter as BaseJsonFormatter;
-use Msstc4Symfony\LoggerBundle\Monolog\Formatter\JsonFormatter;
-use Msstc4Symfony\LoggerBundle\Monolog\Formatter\SwitchFormatter;
-use Msstc4Symfony\LoggerBundle\Monolog\Processor\ConsoleProcessor;
-use Msstc4Symfony\LoggerBundle\Monolog\Processor\EnvironmentProcessor;
-use Msstc4Symfony\LoggerBundle\Monolog\Processor\ExceptionContextProcessor;
-use Msstc4Symfony\LoggerBundle\Monolog\Processor\UserProcessor;
-use Msstc4Symfony\LoggerBundle\Monolog\Processor\WebProcessor;
-use Msstc4Symfony\LoggerBundle\Sentry\Integration\LoggerIntegration;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\JsonFormatter;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\SwitchFormatter;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Processor\ConsoleProcessor;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Processor\EnvironmentProcessor;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Processor\ExceptionContextProcessor;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Processor\UserProcessor;
+use Msstc4Symfony\LoggerBundle\Framework\Monolog\Processor\WebProcessor;
+use Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration;
 use Sentry\Integration\IntegrationInterface;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 

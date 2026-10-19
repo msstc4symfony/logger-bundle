@@ -20,7 +20,7 @@
 
 Запуск: `make test` (= `vendor/bin/phpunit`). Один тест:
 `vendor/bin/phpunit --filter <TestName>` или путь к файлу, например
-`vendor/bin/phpunit tests/Unit/Monolog/Formatter/JsonFormatterTest.php`.
+`vendor/bin/phpunit tests/Unit/Framework/Monolog/Formatter/JsonFormatterTest.php`.
 
 `phpunit.xml.dist` — строгий: `failOnRisky`, `failOnWarning`,
 `failOnPhpunitDeprecation`, `beStrictAboutOutputDuringTests`. Новое
@@ -29,7 +29,7 @@
 
 ## `RecordingLogger` — образец фикстуры
 
-`tests/Unit/Monolog/Handler/Fixture/RecordingLogger.php` — in-memory PSR-3
+`tests/Unit/Framework/Monolog/Handler/Fixture/RecordingLogger.php` — in-memory PSR-3
 логгер (`extends AbstractLogger`), который пишет каждый вызов `log()` в
 публичный `list<array{level: string, message: string|Stringable, context: array<array-key, mixed>}> $records`.
 Используется в `ExceptionFilterDecoratorTest` для проверки, что декоратор
@@ -44,7 +44,7 @@ either пропускает, либо гасит запись, без моков
 
 ## Sentry: глобальное состояние SDK
 
-`tests/Unit/Sentry/Integration/LoggerIntegrationTest.php` работает с реальным
+`tests/Unit/Framework/Sentry/Integration/LoggerIntegrationTest.php` работает с реальным
 SDK (`ClientBuilder` без DSN → null-транспорт). `Scope::addGlobalEventProcessor()`
 пишет в приватный статический `Scope::$globalEventProcessors`, а сборка
 `Client` сама вызывает `setupOnce()` через процессный `IntegrationRegistry`

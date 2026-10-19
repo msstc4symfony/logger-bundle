@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Msstc4Symfony\LoggerBundle\Test\Integration;
 
 use LogicException;
+use Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration;
 use Msstc4Symfony\LoggerBundle\LoggerBundle;
-use Msstc4Symfony\LoggerBundle\Sentry\Integration\LoggerIntegration;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;

@@ -4,6 +4,29 @@ All notable changes to this bundle are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow
 [Semantic Versioning](https://semver.org/); dates are UTC.
 
+## [2.0.0-rc.1] - 2026-10-19
+
+### Added
+
+- README "Public API": the classes and configuration keys applications may rely on.
+
+### Changed
+
+- `Msstc4Symfony\LoggerBundle\Monolog\ContextAwareExceptionInterface` and `ContextAwareExceptionTrait` →
+  `Msstc4Symfony\LoggerBundle\Application\Exception\*`.
+- `Msstc4Symfony\LoggerBundle\Monolog\{Formatter,Handler,Processor}\*` →
+  `Msstc4Symfony\LoggerBundle\Framework\Monolog\{Formatter,Handler,Processor}\*` — update `SwitchFormatter` in
+  `monolog.yaml`.
+- `Msstc4Symfony\LoggerBundle\Sentry\Integration\LoggerIntegration` →
+  `Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration` — update `sentry.yaml`.
+- `Msstc4Symfony\LoggerBundle\DependencyInjection\Compiler\AddExceptionFilterPass` →
+  `Msstc4Symfony\LoggerBundle\DependencyInjection\CompilerPass\AddExceptionFilterPass`.
+- Classes outside the README "Public API" are `@internal`: `JsonFormatter`, `ExceptionFilterDecorator`, the
+  processors and the compiler pass.
+- PHPStan enforces `#[\Override]` on every overriding or implementing method (`checkMissingOverrideMethodAttribute`).
+- Configuration keys are unchanged.
+- Adopts bundle-standard v3 (canonical hex layout, anchored deptrac `BundleRoot`).
+
 ## [1.1.0] - 2026-10-14
 
 ### Added
@@ -39,5 +62,6 @@ First release of `msstc4symfony/logger-bundle` (namespace `Msstc4Symfony\LoggerB
 - PHP >= 8.4, Symfony ^7.4|^8.0, Monolog ^3.5, `symfony/monolog-bundle` ^3.11|^4.0.
 - `sentry/sentry` 4.x only for the optional Sentry integration.
 
+[2.0.0-rc.1]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v2.0.0-rc.1
 [1.1.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v1.1.0
 [1.0.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v1.0.0

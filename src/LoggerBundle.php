@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Msstc4Symfony\LoggerBundle;
 
 use LogicException;
-use Msstc4Symfony\LoggerBundle\DependencyInjection\Compiler\AddExceptionFilterPass;
+use Msstc4Symfony\LoggerBundle\DependencyInjection\CompilerPass\AddExceptionFilterPass;
 use Override;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

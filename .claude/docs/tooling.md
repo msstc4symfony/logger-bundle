@@ -85,8 +85,8 @@ PHPStan не мог бы стать зелёным никаким baseline-пр�
 
 ## deptrac
 
-`deptrac.yaml` — 4 слоя: `Monolog` (ядро, ни от чего не зависит), `Sentry`
-(самодостаточен), `DependencyInjection` (зависит от `Monolog`),
-`BundleRoot` (зависит от `DependencyInjection`). Правила из Task 9, не
-менять без структурной причины — проще отрефакторить зависимость, чем
-ослаблять правило.
+`deptrac.yaml` — шаблон bundle-standard v3 (с 2.0), BundleRoot `^Msstc4Symfony\\LoggerBundle\\LoggerBundle$`.
+Сужение ruleset: `Application` (контракт `ContextAwareException*`) ни от чего; `Framework` (formatter'ы,
+processor'ы, handler-декоратор Monolog, Sentry-интеграция — точки расширения, которые вызывает хост-библиотека) →
+`Application`; `DependencyInjection` → `Framework` (pass декорирует `ExceptionFilterDecorator`); `BundleRoot` →
+`DependencyInjection`. Не ослаблять без структурной причины.

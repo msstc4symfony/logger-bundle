@@ -67,7 +67,7 @@ make test
 
 ## `LoggerIntegration` покрыт тестами
 
-`LoggerIntegrationTest` (для `src/Sentry/Integration/LoggerIntegration.php`) проверяет: теги `application`/`component`
+`LoggerIntegrationTest` (для `src/Framework/Sentry/Integration/LoggerIntegration.php`) проверяет: теги `application`/`component`
 ставятся; ровно один глобальный процессор; значения берутся из интеграции,
 зарегистрированной в клиенте **текущего** хаба (а не из экземпляра, вызвавшего
 `setupOnce()`); без интеграции или без клиента событие возвращается без тегов.
