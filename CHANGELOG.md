@@ -4,6 +4,10 @@ All notable changes to this bundle are documented here. The format follows
 [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), versions follow
 [Semantic Versioning](https://semver.org/); dates are UTC.
 
+## [2.0.0] - 2026-10-20
+
+No changes since 2.0.0-rc.1.
+
 ## [2.0.0-rc.1] - 2026-10-19
 
 ### Added
@@ -62,6 +66,7 @@ First release of `msstc4symfony/logger-bundle` (namespace `Msstc4Symfony\LoggerB
 - PHP >= 8.4, Symfony ^7.4|^8.0, Monolog ^3.5, `symfony/monolog-bundle` ^3.11|^4.0.
 - `sentry/sentry` 4.x only for the optional Sentry integration.
 
+[2.0.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v2.0.0
 [2.0.0-rc.1]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v2.0.0-rc.1
 [1.1.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v1.1.0
 [1.0.0]: https://github.com/msstc4symfony/logger-bundle/releases/tag/v1.0.0
