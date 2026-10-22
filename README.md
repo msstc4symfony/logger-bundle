@@ -206,6 +206,22 @@ class PaymentFailedException extends \RuntimeException implements ContextAwareEx
 Formats log records as JSON with additional features:
 - Adds `application` and `component` fields
 - Extracts metrics (`count`, `size`, `duration`, `id`, `status`) from context into a separate `metrics` field
+- Moves the `extra` keys listed in `json_top_level_extra` to the end of the record — with
+  [tracing-bundle](https://github.com/msstc4symfony/tracing-bundle) `trace_id`, `span_id` and `parent_span_id` (null for
+  the span of a unit of work), so a log query reads `trace_id` instead of `extra_trace_id` after Loki's `| json`:
+
+  ```yaml
+  # config/packages/msstc4symfony_logger.yaml
+  msstc4symfony_logger:
+      json_top_level_extra: [trace_id, span_id, parent_span_id]
+  ```
+
+  ```json
+  {"message":"Order created","context":{},"level":200,"level_name":"INFO","channel":"app","datetime":"2026-10-22T10:00:00+00:00","extra":{"url":"/orders"},"application":"shop","component":"api","metrics":{},"trace_id":"4bf92f3577b34da6a3ce929d0e0e4736","span_id":"00f067aa0ba902b7","parent_span_id":null}
+  ```
+
+  Nothing moves by default; a blank key and a key named like a field of every record (`message`, `context`, `level`,
+  `level_name`, `channel`, `datetime`, `extra`, `application`, `component`, `metrics`) are rejected.
 - Supports structured logging for log aggregation systems
 
 #### SwitchFormatter
@@ -370,8 +386,8 @@ Applications use or implement only these; every other class is `@internal` and m
 | `Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration` | integration id in `sentry.yaml` |
 | `Msstc4Symfony\LoggerBundle\LoggerBundle` | the bundle |
 
-The configuration keys `msstc4symfony_logger.application_name`, `component_name` and `exception_classes` are
-public too.
+The configuration keys `msstc4symfony_logger.application_name`, `component_name`, `exception_classes` and
+`json_top_level_extra` are public too.
 
 Upgrading from 1.x: 2.0 moved every class into the canonical layers — see the CHANGELOG for the old → new names
 (`SwitchFormatter` in `monolog.yaml`, `LoggerIntegration` in `sentry.yaml`). Processors, `JsonFormatter` and

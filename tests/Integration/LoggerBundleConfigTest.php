@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Msstc4Symfony\LoggerBundle\Test\Integration;
 
 use LogicException;
+use Msstc4Symfony\LoggerBundle\DependencyInjection\JsonRecordFields;
 use Msstc4Symfony\LoggerBundle\Framework\Sentry\Integration\LoggerIntegration;
 use Msstc4Symfony\LoggerBundle\LoggerBundle;
 use PHPUnit\Framework\Attributes\CoversNothing;
@@ -101,6 +102,51 @@ final class LoggerBundleConfigTest extends TestCase
         $this->expectExceptionMessage(addslashes(stdClass::class));
 
         $this->load(['exception_classes' => [stdClass::class]]);
+    }
+
+    public function testNoExtraKeyMovesToTheTopLevelByDefault(): void
+    {
+        self::assertSame([], $this->load([])->getParameter('msstc4symfony_logger.json_top_level_extra'));
+    }
+
+    public function testTopLevelExtraKeysAreConfigurable(): void
+    {
+        $container = $this->load(['json_top_level_extra' => ['trace_id', 'span_id']]);
+
+        self::assertSame(['trace_id', 'span_id'], $container->getParameter('msstc4symfony_logger.json_top_level_extra'));
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function reservedFields(): iterable
+    {
+        foreach (JsonRecordFields::ALL as $field) {
+            yield $field => [$field];
+        }
+    }
+
+    #[DataProvider('reservedFields')]
+    public function testAKeyNamedLikeAFieldOfTheRecordIsRejected(string $field): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+        $this->expectExceptionMessage(sprintf('"%s" is a field of every JSON record already', $field));
+
+        $this->load(['json_top_level_extra' => [$field]]);
+    }
+
+    public function testTopLevelExtraKeysBecomeAList(): void
+    {
+        $container = $this->load(['json_top_level_extra' => ['a' => 'trace_id', 'b' => 'span_id']]);
+
+        self::assertSame(['trace_id', 'span_id'], $container->getParameter('msstc4symfony_logger.json_top_level_extra'));
+    }
+
+    public function testABlankTopLevelExtraKeyIsRejected(): void
+    {
+        $this->expectException(InvalidConfigurationException::class);
+
+        $this->load(['json_top_level_extra' => ['  ']]);
     }
 
     public function testSentryIntegrationIsRegistered(): void

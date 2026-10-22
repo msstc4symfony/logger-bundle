@@ -6,6 +6,7 @@ namespace Msstc4Symfony\LoggerBundle;
 
 use LogicException;
 use Msstc4Symfony\LoggerBundle\DependencyInjection\CompilerPass\AddExceptionFilterPass;
+use Msstc4Symfony\LoggerBundle\DependencyInjection\JsonRecordFields;
 use Override;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -53,6 +54,22 @@ final class LoggerBundle extends AbstractBundle
                     ->cannotBeEmpty()
                     ->defaultValue('%env(default:msstc4symfony_logger.unknown:COMPONENT_NAME)%')
                 ->end()
+                ->arrayNode('json_top_level_extra')
+                    ->info('Keys of "extra" that JsonFormatter writes as top-level fields instead, e.g. trace_id and span_id.')
+                    ->defaultValue([])
+                    ->beforeNormalization()->ifArray()->then(array_values(...))->end()
+                    ->stringPrototype()
+                        ->cannotBeEmpty()
+                        ->validate()
+                            ->ifTrue(static fn (string $key): bool => trim($key) === '')
+                            ->thenInvalid('%s is blank.')
+                        ->end()
+                        ->validate()
+                            ->ifInArray(JsonRecordFields::ALL)
+                            ->thenInvalid('%s is a field of every JSON record already.')
+                        ->end()
+                    ->end()
+                ->end()
                 ->arrayNode('exception_classes')
                     ->info('Logged exceptions of these classes (and subclasses) are dropped, except at debug level.')
                     ->defaultValue(self::DEFAULT_EXCEPTION_CLASSES)
@@ -74,7 +91,7 @@ final class LoggerBundle extends AbstractBundle
     #[Override]
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        foreach (['application_name', 'component_name', 'exception_classes'] as $option) {
+        foreach (['application_name', 'component_name', 'exception_classes', 'json_top_level_extra'] as $option) {
             $value = $config[$option] ?? null;
             if (!is_string($value) && !is_array($value)) {
                 throw new LogicException(sprintf('Option "%s" must be processed by configure() before loading.', $option));

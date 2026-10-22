@@ -21,6 +21,9 @@ final class JsonFormatter extends BaseJsonFormatter
 
     private const DEFAULT_COMPONENT = 'unknown';
 
+    /**
+     * @param list<non-empty-string> $topLevelExtra
+     */
     public function __construct(
         int $batchMode = BaseJsonFormatter::BATCH_MODE_JSON,
         bool $appendNewline = true,
@@ -30,6 +33,8 @@ final class JsonFormatter extends BaseJsonFormatter
         private readonly string $application = self::DEFAULT_APPLICATION,
         #[Autowire(param: 'msstc4symfony_logger.component_name')]
         private readonly string $component = self::DEFAULT_COMPONENT,
+        #[Autowire(param: 'msstc4symfony_logger.json_top_level_extra')]
+        private readonly array $topLevelExtra = [],
     ) {
         parent::__construct($batchMode, $appendNewline, $ignoreEmptyContextAndExtra, $includeStacktraces);
     }
@@ -51,6 +56,13 @@ final class JsonFormatter extends BaseJsonFormatter
         }
 
         [$normalized['metrics'], $normalized['context']] = $this->collectMetrics($normalized['context']);
+
+        foreach ($this->topLevelExtra as $key) {
+            if (array_key_exists($key, $normalized['extra'])) {
+                $normalized[$key] = $normalized['extra'][$key];
+                unset($normalized['extra'][$key]);
+            }
+        }
 
         if ($normalized['context'] === []) {
             $normalized['context'] = new stdClass();

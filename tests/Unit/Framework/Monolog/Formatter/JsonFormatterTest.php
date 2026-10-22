@@ -7,12 +7,89 @@ namespace Msstc4Symfony\LoggerBundle\Test\Unit\Framework\Monolog\Formatter;
 use DateTimeImmutable;
 use Monolog\Level;
 use Monolog\LogRecord;
+use Msstc4Symfony\LoggerBundle\DependencyInjection\JsonRecordFields;
 use Msstc4Symfony\LoggerBundle\Framework\Monolog\Formatter\JsonFormatter;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 final class JsonFormatterTest extends TestCase
 {
+    public function testListedExtraKeysMoveToTheTopLevel(): void
+    {
+        $record = new LogRecord(
+            new DateTimeImmutable('2026-10-22T10:00:00+00:00'),
+            'app',
+            Level::Info,
+            'Handled',
+            [],
+            ['trace_id' => '4bf92f3577b34da6a3ce929d0e0e4736', 'span_id' => '00f067aa0ba902b7', 'url' => '/orders'],
+        );
+
+        $formatter = new JsonFormatter(topLevelExtra: ['trace_id', 'span_id', 'parent_span_id']);
+        $decoded = json_decode($formatter->format($record), true, flags: JSON_THROW_ON_ERROR);
+
+        self::assertIsArray($decoded);
+        self::assertSame('4bf92f3577b34da6a3ce929d0e0e4736', $decoded['trace_id'] ?? null);
+        self::assertSame('00f067aa0ba902b7', $decoded['span_id'] ?? null);
+        self::assertArrayNotHasKey('parent_span_id', $decoded);
+        self::assertSame(['url' => '/orders'], $decoded['extra'] ?? null);
+    }
+
+    public function testExtraEmptiedByTheMoveIsAnEmptyObject(): void
+    {
+        $record = new LogRecord(new DateTimeImmutable(), 'app', Level::Info, 'Handled', [], ['trace_id' => 'abc']);
+
+        $json = (new JsonFormatter(topLevelExtra: ['trace_id']))->format($record);
+
+        self::assertStringContainsString('"extra":{}', $json);
+        self::assertStringContainsString('"trace_id":"abc"', $json);
+    }
+
+    public function testArrayAndNullValuesMoveAsTheyAre(): void
+    {
+        $record = new LogRecord(new DateTimeImmutable(), 'app', Level::Info, 'Handled', [], ['tags' => ['a' => [1, 2]], 'parent_span_id' => null]);
+
+        $json = (new JsonFormatter(appendNewline: false, topLevelExtra: ['tags', 'parent_span_id']))->format($record);
+
+        self::assertStringEndsWith('"tags":{"a":[1,2]},"parent_span_id":null}', $json);
+    }
+
+    public function testMovedKeysFollowTheOtherFieldsWhenEmptyContextAndExtraAreIgnored(): void
+    {
+        $record = new LogRecord(new DateTimeImmutable('2026-10-22T10:00:00+00:00'), 'app', Level::Info, 'Handled', [], ['trace_id' => 'abc']);
+
+        $decoded = json_decode(
+            (new JsonFormatter(ignoreEmptyContextAndExtra: true, topLevelExtra: ['trace_id']))->format($record),
+            true,
+            flags: JSON_THROW_ON_ERROR,
+        );
+
+        self::assertIsArray($decoded);
+        self::assertSame('trace_id', array_key_last($decoded));
+        self::assertSame([], $decoded['extra'] ?? null);
+    }
+
+    public function testTheReservedFieldsAreTheFieldsOfARecord(): void
+    {
+        $record = new LogRecord(new DateTimeImmutable(), 'app', Level::Info, 'Handled');
+
+        $decoded = json_decode((new JsonFormatter())->format($record), true, flags: JSON_THROW_ON_ERROR);
+
+        self::assertIsArray($decoded);
+        self::assertEqualsCanonicalizing(JsonRecordFields::ALL, array_keys($decoded));
+    }
+
+    public function testNothingMovesByDefault(): void
+    {
+        $record = new LogRecord(new DateTimeImmutable(), 'app', Level::Info, 'Handled', [], ['trace_id' => 'abc']);
+
+        $decoded = json_decode((new JsonFormatter())->format($record), true, flags: JSON_THROW_ON_ERROR);
+
+        self::assertIsArray($decoded);
+        self::assertArrayNotHasKey('trace_id', $decoded);
+        self::assertSame(['trace_id' => 'abc'], $decoded['extra'] ?? null);
+    }
+
     public function testFormatAppendsNewlineByDefault(): void
     {
         $record = new LogRecord(new DateTimeImmutable('2025-12-01 10:00:00'), 'test', Level::Info, 'test message');
