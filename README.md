@@ -1,7 +1,6 @@
 # Logger Bundle
 
 ![Build Status](https://github.com/msstc4symfony/logger-bundle/actions/workflows/checks.yml/badge.svg?branch=main)
-[![codecov](https://codecov.io/github/msstc4symfony/logger-bundle/graph/badge.svg?token=Uljr8Pgeto)](https://codecov.io/github/msstc4symfony/logger-bundle)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A Symfony bundle that extends Monolog with enhanced logging capabilities, including context-aware processors, flexible

@@ -10,21 +10,17 @@ jobs:
   standard:
     uses: msstc4symfony/bundle-standard/.github/workflows/php-bundle.yml@v2.0.1
     with:
-      slug: msstc4symfony/logger-bundle
       extensions: 'mbstring, xml, ctype, iconv, intl, json'
       infection-min-msi: 78
       infection-min-covered-msi: 78
-    secrets:
-      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
 ```
 
 Входы `php-bundle.yml` (см. `bundle-standard/README.md`):
 
 | Вход | Дефолт | Назначение |
 |---|---|---|
-| `slug` | — (обязателен) | `owner/repo` для загрузки в Codecov |
 | `php-versions` | `["8.2","8.3","8.4","8.5"]` | матрица PHP для PHPUnit (с v2.0.0 стандарта) |
-| `symfony-versions` | 7.4 (PHP 8.2+) / 8.x (PHP 8.4+), coverage на 8.x | матрица Symfony, объект `{version,label,codecov,php?}` |
+| `symfony-versions` | 7.4 (PHP 8.2+) / 8.x (PHP 8.4+) | матрица Symfony, объект `{version,label,php?}` |
 | `extensions` | `mbstring, xml, ctype, iconv, intl` | PHP-расширения для тестов |
 | `run-deptrac` | `true` | джоба DEPTRAC |
 | `run-infection` | `true` | mutation testing (только push в `main`), блокирующий |
@@ -32,7 +28,6 @@ jobs:
 | `infection-min-covered-msi` | `55` | минимальный covered MSI, %; у нас `78` |
 | `run-bc-check` | `true` | Roave backward-compatibility check, блокирующий; у нас включён (дефолт) |
 | `run-prefer-lowest` | `true` | доп. ячейка PHPUnit: первая PHP × первая Symfony, `--prefer-lowest` |
-| `run-codecov` | `false` | загрузка покрытия в Codecov; нужен секрет `CODECOV_TOKEN` |
 
 **Менять матрицу нужно через входы `with:` в `checks.yml` бандла, а не
 форком workflow.** Форк ломает единый источник правды по всему семейству
@@ -51,9 +46,7 @@ jobs:
 Версия стандарта закреплена точным тегом (`@v1.0.0`): GitHub не понимает
 диапазоны, обновление стандарта — явная правка этой строки.
 
-Codecov выключен (`run-codecov` по умолчанию `false`): в организации
-`msstc4symfony` пока нет секрета `CODECOV_TOKEN`. Включение — `run-codecov: true`
-в `with:` после появления секрета.
+Покрытие никуда не загружается: Codecov убран из стандарта в v4.0.0.
 
 ## Пороги Infection и prefer-lowest
 
